@@ -6,11 +6,11 @@ using ImgurNet.Web;
 
 namespace ImgurNet.ApiEndpoints
 {
-	public class AccountEndpoint
+	public class ImageEndpoint
 	{
 		#region EndPoints
 
-		private const string _accountUrl = "account/{0}";
+		private const string _imageUrl = "image/{0}";
 
 		#endregion
 
@@ -23,22 +23,22 @@ namespace ImgurNet.ApiEndpoints
 		/// 
 		/// </summary>
 		/// <param name="imgur"></param>
-		public AccountEndpoint(Imgur imgur)
+		public ImageEndpoint(Imgur imgur)
 		{
 			Imgur = imgur;
 		}
 
 		/// <summary>
-		/// Request standard account information
+		/// Get information about an image.
 		/// </summary>
-		/// <param name="username">The username of the account you want information of.</param>
-		/// <returns>The account data</returns>
-		public async Task<ImgurResponse<Account>> GetAccountDetails(string username)
+		/// <param name="imageId">The Id of the image you want details of.</param>
+		/// <returns>The image data.</returns>
+		public async Task<ImgurResponse<Image>> GetImageDetails(string imageId)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.Get<Account>(String.Format(_accountUrl, username), Imgur.Authentication);
+			return await Request.Get<Image>(String.Format(_imageUrl, imageId), Imgur.Authentication);
 		}
 	}
 }

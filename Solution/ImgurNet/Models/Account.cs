@@ -1,9 +1,13 @@
-﻿namespace ImgurNet.Models
+﻿using System;
+using ImgurNet.Converters.Json;
+using Newtonsoft.Json;
+
+namespace ImgurNet.Models
 {
 	public class Account : DataModelBase
 	{
 		/// <summary>
-		/// The account Id for the username requested.
+		/// The Id of the account.
 		/// </summary>
 		public int Id
 		{
@@ -13,7 +17,7 @@
 		private int _id;
 
 		/// <summary>
-		/// The account username, will be the same as requested in the Url
+		/// The account username, will be the same as requested in the Url.
 		/// </summary>
 		public string Url
 		{
@@ -23,7 +27,7 @@
 		private string _url;
 
 		/// <summary>
-		/// A basic description the user has filled out
+		/// A basic description the user has filled out.
 		/// </summary>
 		public string Bio
 		{
@@ -43,14 +47,15 @@
 		private float _reputation;
 
 		/// <summary>
-		/// The epoch time of account creation
+		/// The epoch time of account creation.
 		/// </summary>
-		public int Created
+		[JsonConverter(typeof(UnixDateTimeConverter))]
+		public DateTime Created
 		{
 			get { return _created; }
 			set { SetField(ref _created, value); }
 		}
-		private int _created;
+		private DateTime _created;
 
 		/// <summary>
 		/// 0 if not a pro user, their expiration date if they are.

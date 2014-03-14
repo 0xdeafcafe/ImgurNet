@@ -45,10 +45,17 @@ namespace ImgurNet.Web
 				case HttpMethod.Get:
 					var httpResponse = await httpClient.GetAsync(endpointUri);
 					var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-					var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
+					try
+					{
+						var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 
-					// Validate it
-					return ValidateResponse(imgurResponse);
+						// Validate it
+						return ValidateResponse(imgurResponse);
+					}
+					catch (JsonReaderException ex)
+					{
+						return null;
+					}
 				default:
 					throw new NotImplementedException("Soon.");
 			}
