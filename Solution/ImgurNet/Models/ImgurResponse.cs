@@ -1,4 +1,6 @@
-﻿namespace ImgurNet.Models
+﻿using System.Net;
+
+namespace ImgurNet.Models
 {
 	public class ImgurResponse<T> : NotifyPropertyChangedBase
 		where T : DataModelBase
@@ -16,12 +18,12 @@
 		/// <summary>
 		/// 
 		/// </summary>
-		public int Status
+		public HttpStatusCode Status
 		{
 			get { return _status; }
 			set { SetField(ref _status, value); }
 		}
-		private int _status;
+		private HttpStatusCode _status;
 
 		/// <summary>
 		/// 

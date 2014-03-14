@@ -37,6 +37,7 @@
     <Compile Include="Attributes\ReadOnlyRequest.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\ClientAuthentication.cs" />
+    <Compile Include="Exceptions\ImgurResponseFailedException.cs" />
     <Compile Include="Exceptions\InvalidAuthenticationException.cs" />
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Account.cs" />

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
+using ImgurNet.Exceptions;
 using ImgurNet.Models;
 using Newtonsoft.Json;
 
@@ -43,12 +45,24 @@ namespace ImgurNet.Web
 				case HttpMethod.Get:
 					var httpResponse = await httpClient.GetAsync(endpointUri);
 					var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-					var output = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
-					return output;
+					var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 
+					// Validate it
+					return ValidateResponse(imgurResponse);
 				default:
 					throw new NotImplementedException("Soon.");
 			}
+		}
+
+		internal static ImgurResponse<T> ValidateResponse<T>(ImgurResponse<T> imgurResponse)
+			where T : DataModelBase
+		{
+			if (imgurResponse == null) throw new InvalidDataException("The Imgur response is null.");
+			if (imgurResponse.Status != HttpStatusCode.OK || !imgurResponse.Success)
+				throw new ImgurResponseFailedException<T>(imgurResponse,
+					"The response from Imgur was a failure, it has been embedded into the exception to see whats going on.");
+
+			return imgurResponse;
 		}
 
 		internal enum HttpMethod
