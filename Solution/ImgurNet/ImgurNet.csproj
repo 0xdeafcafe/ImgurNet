@@ -38,12 +38,16 @@
     <Compile Include="Attributes\ReadOnlyRequest.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\ClientAuthentication.cs" />
+    <Compile Include="Converters\Generic\UnixTimestampConverters.cs" />
     <Compile Include="Converters\Json\UnixDateTimeConverter.cs" />
     <Compile Include="Exceptions\ImgurResponseFailedException.cs" />
     <Compile Include="Exceptions\InvalidAuthenticationException.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\HttpResponseHeadersExtensions.cs" />
+    <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Credits.cs" />
     <Compile Include="Models\DataModelBase.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Error.cs" />

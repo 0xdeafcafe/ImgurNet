@@ -15,7 +15,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetImageDetails()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 			var response = await imageEndpoint.GetImageDetails("F1sUnHq");
 
@@ -39,9 +39,8 @@ namespace ImgurNet.Tests.ApiEndpoints
 		{
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
-			//const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
 
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try
@@ -64,7 +63,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		{
 			const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
 
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try

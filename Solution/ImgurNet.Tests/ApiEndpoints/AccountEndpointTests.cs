@@ -15,7 +15,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestAccountGet()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var response = await accountEndpoint.GetAccountDetails("xerax");
 
@@ -32,7 +32,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestBadAccountGet()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			ImgurResponse<Account> imgurReponse = null;
 			try

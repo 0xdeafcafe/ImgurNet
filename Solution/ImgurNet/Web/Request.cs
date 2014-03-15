@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
+using ImgurNet.Converters.Generic;
 using ImgurNet.Exceptions;
 using ImgurNet.Extensions;
 using ImgurNet.Models;
@@ -85,6 +85,13 @@ namespace ImgurNet.Web
 				default:
 					throw new NotImplementedException("Soon.");
 			}
+
+			// Get rate limit figures
+			authentication.RateLimit.ClientLimit = int.Parse(httpResponse.Headers.GetValue("X-RateLimit-ClientLimit") ?? "12500");
+			authentication.RateLimit.ClientRemaining = int.Parse(httpResponse.Headers.GetValue("X-RateLimit-ClientRemaining") ?? "12500");
+			authentication.RateLimit.UserLimit = int.Parse(httpResponse.Headers.GetValue("X-RateLimit-UserLimit") ?? "500");
+			authentication.RateLimit.UserRemaining = int.Parse(httpResponse.Headers.GetValue("X-RateLimit-UserRemaining") ?? "500");
+			authentication.RateLimit.UserReset = double.Parse(httpResponse.Headers.GetValue("X-RateLimit-UserReset") ?? "0").ToDateTime();
 
 			// Try parsing and validating the output
 			try
