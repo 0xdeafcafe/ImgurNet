@@ -39,30 +39,30 @@ namespace ImgurNet.ApiEndpoints
 		/// </summary>
 		/// <param name="imageId">The Id of the image you want details of.</param>
 		/// <returns>The image data.</returns>
-		public async Task<ImgurResponse<Image>> GetImageDetails(string imageId)
+		public async Task<ImgurResponse<Image>> GetImageDetailsAsync(string imageId)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitRequest<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
+			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
 		}
 
 		/// <summary>
 		/// Deletes an image from imgur. You get the deletion hash from the initial image response when you upload an image, or 
-		/// from <see cref="GetImageDetails"/> if you are signed in and own that image;
+		/// from <see cref="GetImageDetailsAsync"/> if you are signed in and own that image;
 		/// </summary>
 		/// <param name="imageDeletionHash">The image deletion hash</param>
-		public async Task<ImgurResponse<Boolean>> DeleteImage(string imageDeletionHash)
+		public async Task<ImgurResponse<Boolean>> DeleteImageAsync(string imageDeletionHash)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitRequest<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
+			return await Request.SubmitRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
 		}
 
 		#region Upload Base64 Image
 
-		public async Task<ImgurResponse<Image>> UploadImageFromBase64(string base64ImageData,
+		public async Task<ImgurResponse<Image>> UploadImageFromBase64Async(string base64ImageData,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
 			if (Imgur.Authentication == null)
@@ -83,20 +83,14 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitRequest<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
 		}
 
 		#endregion
 
 		#region Upload Image From Url
 
-		public async Task<ImgurResponse<Image>> UploadImageFromUrl(string url,
-			string albumId = null, string name = null, string title = null, string description = null)
-		{
-			return await UploadImageFromUrl(new Uri(url), albumId, name, title, description);
-		}
-
-		public async Task<ImgurResponse<Image>> UploadImageFromUrl(Uri uri,
+		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(string url,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
 			if (Imgur.Authentication == null)
@@ -104,7 +98,7 @@ namespace ImgurNet.ApiEndpoints
 
 			var keyPairs = new List<KeyValuePair<string, string>>
 			{
-				new KeyValuePair<string, string>("image", uri.ToString()),
+				new KeyValuePair<string, string>("image", url),
 				new KeyValuePair<string, string>("type", "url")
 			};
 			if (albumId != null) keyPairs.Add(new KeyValuePair<string, string>(albumId, albumId));
@@ -113,17 +107,23 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitRequest<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+		}
+
+		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(Uri uri,
+			string albumId = null, string name = null, string title = null, string description = null)
+		{
+			return await UploadImageFromUrlAsync(uri.ToString(), albumId, name, title, description);
 		}
 
 		#endregion
 
 		#region Upload Image From Binary
 
-		public async Task<ImgurResponse<Image>> UploadImageFromBinary(byte[] imageBinary,
+		public async Task<ImgurResponse<Image>> UploadImageFromBinaryAsync(byte[] imageBinary,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
-			return await UploadImageFromBase64(Convert.ToBase64String(imageBinary), albumId, name, title, description);
+			return await UploadImageFromBase64Async(Convert.ToBase64String(imageBinary), albumId, name, title, description);
 		}
 
 		#endregion

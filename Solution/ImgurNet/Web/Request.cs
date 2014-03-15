@@ -29,10 +29,10 @@ namespace ImgurNet.Web
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		internal async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, string endpointUrl,
+		internal async static Task<ImgurResponse<T>> SubmitRequestAsync<T>(HttpMethod httpMethod, string endpointUrl,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
-			return await SubmitRequest<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
+			return await SubmitRequestAsync<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace ImgurNet.Web
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		private async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, Uri endpointUri,
+		private async static Task<ImgurResponse<T>> SubmitRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
 			// Set up Query Strings

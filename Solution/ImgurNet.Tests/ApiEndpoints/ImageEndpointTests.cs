@@ -17,7 +17,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		{
 			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
-			var response = await imageEndpoint.GetImageDetails("F1sUnHq");
+			var response = await imageEndpoint.GetImageDetailsAsync("F1sUnHq");
 
 			// Assert the Reponse
 			Assert.IsNotNull(response.Data);
@@ -42,8 +42,8 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
-			var uploadedImage = await imageEndpoint.UploadImageFromBinary(imageBinary);
-			var response = await imageEndpoint.DeleteImage(uploadedImage.Data.DeleteHash);
+			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
+			var response = await imageEndpoint.DeleteImageAsync(uploadedImage.Data.DeleteHash);
 
 			// Assert the Reponse
 			Assert.IsNotNull(response.Data);
@@ -63,7 +63,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			try
 			{
-				var response = await imageEndpoint.UploadImageFromBinary(imageBinary, title: "yolo", description: "Keep Calm, because yolo #420");
+				var response = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary, title: "yolo", description: "Keep Calm, because yolo #420");
 
 				// Assert the Reponse
 				Assert.IsNotNull(response.Data);
@@ -86,7 +86,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			try
 			{
-				var response = await imageEndpoint.UploadImageFromUrl(imageUrl, title: "yolo", description: "Keep Calm, because yolo #420");
+				var response = await imageEndpoint.UploadImageFromUrlAsync(imageUrl, title: "yolo", description: "Keep Calm, because yolo #420");
 
 				// Assert the Reponse
 				Assert.IsNotNull(response.Data);

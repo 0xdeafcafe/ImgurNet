@@ -33,12 +33,12 @@ namespace ImgurNet.ApiEndpoints
 		/// </summary>
 		/// <param name="username">The username of the account you want information of.</param>
 		/// <returns>The account data</returns>
-		public async Task<ImgurResponse<Account>> GetAccountDetails(string username)
+		public async Task<ImgurResponse<Account>> GetAccountDetailsAsync(string username)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitRequest<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
+			return await Request.SubmitRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
 		}
 	}
 }

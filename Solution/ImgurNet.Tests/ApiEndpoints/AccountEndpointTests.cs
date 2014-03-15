@@ -17,7 +17,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		{
 			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var response = await accountEndpoint.GetAccountDetails("xerax");
+			var response = await accountEndpoint.GetAccountDetailsAsync("xerax");
 
 			// Assert the Reponse
 			Assert.IsNotNull(response.Data);
@@ -37,7 +37,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			ImgurResponse<Account> imgurReponse = null;
 			try
 			{
-				imgurReponse = await accountEndpoint.GetAccountDetails("black-dicks (this account doesn't exist, perfect for le test)");
+				imgurReponse = await accountEndpoint.GetAccountDetailsAsync("black-dicks (this account doesn't exist, perfect for le test)");
 			}
 			catch (ImgurResponseFailedException exception)
 			{
