@@ -25,7 +25,7 @@ namespace ImgurNet
 		/// <param name="authentication">The authentication to put into this Client.</param>
 		public void ChangeAuthentication(IAuthentication authentication)
 		{
-			if (authentication.AuthenticationType == AuthenticationType.OAuth)
+			if (authentication.AuthenticationType != AuthenticationType.ClientId)
 				throw new NotImplementedException();
 
 			Authentication = authentication;
