@@ -3,7 +3,6 @@
 namespace ImgurNet.Models
 {
 	public class ImgurResponse<T> : NotifyPropertyChangedBase
-		where T : DataModelBase
 	{
 		/// <summary>
 		/// 

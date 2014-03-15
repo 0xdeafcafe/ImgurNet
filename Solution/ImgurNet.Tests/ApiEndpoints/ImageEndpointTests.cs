@@ -35,6 +35,24 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
+		public async Task TestDeleteImage()
+		{
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+			var uploadedImage = await imageEndpoint.UploadImageFromBinary(imageBinary);
+			var response = await imageEndpoint.DeleteImage(uploadedImage.Data.DeleteHash);
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+			Assert.IsTrue(response.Data);
+		}
+
+		[TestMethod]
 		public async Task TestImageUploadFromBinary()
 		{
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";

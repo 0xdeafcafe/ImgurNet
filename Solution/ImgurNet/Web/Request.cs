@@ -31,7 +31,6 @@ namespace ImgurNet.Web
 		/// <returns></returns>
 		internal async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, string endpointUrl,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
-			where T : DataModelBase
 		{
 			return await SubmitRequest<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
 		}
@@ -48,7 +47,6 @@ namespace ImgurNet.Web
 		/// <returns></returns>
 		private async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, Uri endpointUri,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
-			where T : DataModelBase
 		{
 			// Set up Query Strings
 			if (queryStrings != null)
@@ -82,6 +80,9 @@ namespace ImgurNet.Web
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
 					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new MultipartFormDataContent());
 					break;
+				case HttpMethod.Delete:
+					httpResponse = await httpClient.DeleteAsync(endpointUri);
+					break;
 				default:
 					throw new NotImplementedException("Soon.");
 			}
@@ -106,7 +107,7 @@ namespace ImgurNet.Web
 			}
 			catch (JsonReaderException ex) { return null; }
 		}
-		
+				
 		/// <summary>
 		/// 
 		/// </summary>

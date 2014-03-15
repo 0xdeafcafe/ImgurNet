@@ -47,6 +47,19 @@ namespace ImgurNet.ApiEndpoints
 			return await Request.SubmitRequest<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
 		}
 
+		/// <summary>
+		/// Deletes an image from imgur. You get the deletion hash from the initial image response when you upload an image, or 
+		/// from <see cref="GetImageDetails"/> if you are signed in and own that image;
+		/// </summary>
+		/// <param name="imageDeletionHash">The image deletion hash</param>
+		public async Task<ImgurResponse<Boolean>> DeleteImage(string imageDeletionHash)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			return await Request.SubmitRequest<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
+		}
+
 		#region Upload Base64 Image
 
 		public async Task<ImgurResponse<Image>> UploadImageFromBase64(string base64ImageData,
