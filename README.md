@@ -13,7 +13,7 @@ ImgurNet
 This is the current status of how much of the Imgur Api set has been completed:
 
 * Account:      __(1/30)__
-* Album:        __(0/10)__
+* Album:        __(3/10)__
 * Comment:      __(0/7)__
 * Gallery:      __(0/20)__
 * Image:        __(3/5)__
@@ -24,8 +24,8 @@ This is the current status of how much of the Imgur Api set has been completed:
 
 This is the current status of authentication:
 
-* ClientId Authentication __(done)__
-* OAuth 2 Authentication __(needs doing)__
+* ClientId Authentication __(Done)__
+* OAuth 2 Authentication __(Started work on implementation)__
 
 
 ### Contribution
