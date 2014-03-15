@@ -11,5 +11,12 @@
 			LargeThumbnail,
 			HugeThumbnail
 		}
+
+		public enum OAuth2Type
+		{
+			Code,
+			Token,
+			Pin
+		}
 	}
 }

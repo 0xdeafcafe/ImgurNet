@@ -68,8 +68,14 @@ namespace ImgurNet.Web
 						String.Format("Client-ID {0}", clientAuthentication.ClientId));
 					break;
 
-				case AuthenticationType.OAuth:
-					throw new NotImplementedException("ImgurNet doesn't support OAuth currently. Soon!");
+				case AuthenticationType.OAuth2:
+					var oAuth2Authentication = authentication as OAuth2Authentication;
+					if (oAuth2Authentication == null)
+						throw new InvalidDataException("This should not have happened. The authentication interface is not of type OAuth2Authentication, yet it's type says it is. PANIC. (nah, just tweet @alexerax).");
+
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization",
+						String.Format("Bearer {0}", oAuth2Authentication.AccessToken));
+					break;
 			}
 			
 			// Check which request to do, and execute it

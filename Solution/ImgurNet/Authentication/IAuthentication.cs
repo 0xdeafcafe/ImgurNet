@@ -15,6 +15,6 @@ namespace ImgurNet.Authentication
 	public enum AuthenticationType
 	{
 		ClientId,
-		OAuth
+		OAuth2
 	}
 }

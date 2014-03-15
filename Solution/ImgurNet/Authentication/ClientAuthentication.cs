@@ -12,7 +12,7 @@ namespace ImgurNet.Authentication
 		public AuthenticationType AuthenticationType { get; private set; }
 
 		/// <summary>
-		/// The ClientId of your imgur application.
+		/// The ClientId of your Imgur application.
 		/// </summary>
 		public string ClientId { get; private set; }
 
