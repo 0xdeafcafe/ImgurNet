@@ -10,7 +10,7 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region EndPoints
 
-		private const string _accountUrl = "account/{0}";
+		private const string AccountUrl = "account/{0}";
 
 		#endregion
 
@@ -38,7 +38,7 @@ namespace ImgurNet.ApiEndpoints
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.Get<Account>(String.Format(_accountUrl, username), Imgur.Authentication);
+			return await Request.SubmitRequest<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
 		}
 	}
 }

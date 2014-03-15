@@ -1,7 +1,4 @@
 ﻿namespace ImgurNet.Models
 {
-	public abstract class DataModelBase : NotifyPropertyChangedBase
-	{
-
-	}
+	public abstract class DataModelBase : NotifyPropertyChangedBase { }
 }

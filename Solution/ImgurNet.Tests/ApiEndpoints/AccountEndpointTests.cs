@@ -39,7 +39,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			{
 				imgurReponse = await accountEndpoint.GetAccountDetails("black-dicks (this account doesn't exist, perfect for le test)");
 			}
-			catch (ImgurResponseFailedException<Account> exception)
+			catch (ImgurResponseFailedException exception)
 			{
 				// Assert the Reponse
 				Assert.IsNotNull(exception.ImgurResponse.Data);
@@ -47,9 +47,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 				Assert.AreEqual(exception.ImgurResponse.Status, HttpStatusCode.BadRequest);
 
 				// Assert the Data
-				Assert.AreEqual(exception.ImgurResponse.Data.Id, 0);
-				Assert.AreEqual(exception.ImgurResponse.Data.Created, new DateTime(1, 1, 1, 0, 0, 0));
-				Assert.IsNull(exception.ImgurResponse.Data.Url);
+				Assert.AreEqual(exception.ImgurResponse.Data.ErrorDescription, "A username is required.");
+				Assert.AreEqual(exception.ImgurResponse.Data.Method, "GET");
+				Assert.AreEqual(exception.ImgurResponse.Data.Request, "/3/account/black-dicks (this account doesn't exist, perfect for le test)");
 			}
 
 			Assert.IsNull(imgurReponse);

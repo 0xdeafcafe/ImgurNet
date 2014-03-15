@@ -41,10 +41,12 @@
     <Compile Include="Converters\Json\UnixDateTimeConverter.cs" />
     <Compile Include="Exceptions\ImgurResponseFailedException.cs" />
     <Compile Include="Exceptions\InvalidAuthenticationException.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\DataModelBase.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImgurResponse.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />

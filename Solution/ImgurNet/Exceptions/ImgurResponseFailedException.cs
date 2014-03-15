@@ -3,21 +3,20 @@ using ImgurNet.Models;
 
 namespace ImgurNet.Exceptions
 {
-	public class ImgurResponseFailedException<T> : Exception
-		where T : DataModelBase
+	public class ImgurResponseFailedException : Exception
 	{
-		public ImgurResponse<T> ImgurResponse; 
+		public ImgurResponse<Error> ImgurResponse; 
 
 		public ImgurResponseFailedException(string message)
 			: base(message) { }
 
-		public ImgurResponseFailedException(ImgurResponse<T> imgurResponse, string message)
+		public ImgurResponseFailedException(ImgurResponse<Error> imgurResponse, string message)
 			: base(message)
 		{
 			ImgurResponse = imgurResponse;
 		}
 
-		public ImgurResponseFailedException(ImgurResponse<T> imgurResponse, string message, Exception innerException)
+		public ImgurResponseFailedException(ImgurResponse<Error> imgurResponse, string message, Exception innerException)
 			: base(message, innerException)
 		{
 			ImgurResponse = imgurResponse;

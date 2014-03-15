@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
+using ImgurNet.Extensions;
 using ImgurNet.Models;
 using Newtonsoft.Json;
 
@@ -12,25 +14,54 @@ namespace ImgurNet.Web
 {
 	internal static class Request
 	{
+		/// <summary>
+		/// 
+		/// </summary>
 		internal static readonly string ImgurApiV3Base = "https://api.imgur.com/3/{0}";
 
-		internal static async Task<ImgurResponse<T>> Get<T>(string endpoint, IAuthentication authentication)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="httpMethod"></param>
+		/// <param name="endpointUrl"></param>
+		/// <param name="authentication"></param>
+		/// <param name="queryStrings"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
+		internal async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, string endpointUrl,
+			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 			where T : DataModelBase
 		{
-			return await DoWebRequest<T>(HttpMethod.Get, new Uri(String.Format(ImgurApiV3Base, endpoint)), authentication);
+			return await SubmitRequest<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
 		}
 
-		private async static Task<ImgurResponse<T>> DoWebRequest<T>(HttpMethod httpMethod, Uri endpointUri, IAuthentication authentication)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="httpMethod"></param>
+		/// <param name="endpointUri"></param>
+		/// <param name="authentication"></param>
+		/// <param name="queryStrings"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
+		private async static Task<ImgurResponse<T>> SubmitRequest<T>(HttpMethod httpMethod, Uri endpointUri,
+			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 			where T : DataModelBase
 		{
+			// Set up Query Strings
+			if (queryStrings != null)
+				endpointUri = queryStrings.ToQueryString(endpointUri);
+
+			// Create the Http Client
 			var httpClient = new HttpClient();
 			switch (authentication.AuthenticationType)
 			{
 				case AuthenticationType.ClientId:
 					var clientAuthentication = authentication as ClientAuthentication;
 					if (clientAuthentication == null) 
-						throw new InvalidDataException(
-							"This should not have happened. The authentication interface is not of type ClientAuthentication, yet it's type says it is. PANIC. (nah, just tweet @alexerax).");
+						throw new InvalidDataException("This should not have happened. The authentication interface is not of type ClientAuthentication, yet it's type says it is. PANIC. (nah, just tweet @alexerax).");
 
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization",
 						String.Format("Client-ID {0}", clientAuthentication.ClientId));
@@ -39,39 +70,38 @@ namespace ImgurNet.Web
 				case AuthenticationType.OAuth:
 					throw new NotImplementedException("ImgurNet doesn't support OAuth currently. Soon!");
 			}
-
+			
+			// Check which request to do, and execute it
+			HttpResponseMessage httpResponse;
 			switch (httpMethod)
 			{
 				case HttpMethod.Get:
-					var httpResponse = await httpClient.GetAsync(endpointUri);
-					var stringResponse = await httpResponse.Content.ReadAsStringAsync();
-					try
-					{
-						var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
-
-						// Validate it
-						return ValidateResponse(imgurResponse);
-					}
-					catch (JsonReaderException ex)
-					{
-						return null;
-					}
+					httpResponse = await httpClient.GetAsync(endpointUri);
+					break;
+				case HttpMethod.Post:
+					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new StringContent(""));
+					break;
 				default:
 					throw new NotImplementedException("Soon.");
 			}
+
+			// Try parsing and validating the output
+			try
+			{
+				var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
+				if (imgurResponse.Success)
+					return imgurResponse;
+
+				var errorImgurReponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
+				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);
+			}
+			catch (JsonReaderException ex) { return null; }
 		}
-
-		internal static ImgurResponse<T> ValidateResponse<T>(ImgurResponse<T> imgurResponse)
-			where T : DataModelBase
-		{
-			if (imgurResponse == null) throw new InvalidDataException("The Imgur response is null.");
-			if (imgurResponse.Status != HttpStatusCode.OK || !imgurResponse.Success)
-				throw new ImgurResponseFailedException<T>(imgurResponse,
-					"The response from Imgur was a failure, it has been embedded into the exception to see whats going on.");
-
-			return imgurResponse;
-		}
-
+		
+		/// <summary>
+		/// 
+		/// </summary>
 		internal enum HttpMethod
 		{
 			Get,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
@@ -11,7 +12,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 	public class ImageEndpointTests
 	{
 		[TestMethod]
-		public async Task TestAccountGet()
+		public async Task TestGetImageDetails()
 		{
 			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
@@ -29,7 +30,18 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(response.Data.Width, 230);
 			Assert.AreEqual(response.Data.Animated, true);
 			Assert.AreEqual(response.Data.Link, "http://i.imgur.com/F1sUnHq.gif");
-			Assert.AreEqual(response.Data.AddedToGallery, new DateTime(2014, 2, 21, 11, 41, 46));
+			Assert.AreEqual(response.Data.AddedToGallery, new DateTime(2014, 2, 21, 23, 41, 46));
+		}
+
+		[TestMethod]
+		public async Task TestImageUpload()
+		{
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var base64ImageString = Convert.ToBase64String(File.ReadAllBytes(filePath));
+
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+			var response = await imageEndpoint.UploadImageFromBase64(base64ImageString, name: "yolo");
 		}
 	}
 }
