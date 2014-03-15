@@ -22,7 +22,7 @@ namespace ImgurNet.Converters.Generic
 		/// <param name="dateTime">A datetime needed to be converted to a Unix Timestmap</param>
 		internal static double ToUnixTimestamp(this DateTime dateTime)
 		{
-			return (dateTime - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+			return Math.Round((dateTime - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds, MidpointRounding.AwayFromZero);
 		}
 	}
 }

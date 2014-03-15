@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiEndpoints\AccountEndpoint.cs" />
+    <Compile Include="ApiEndpoints\AlbumEndpoint.cs" />
     <Compile Include="ApiEndpoints\ImageEndpoint.cs" />
     <Compile Include="Attributes\ReadOnlyRequest.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Credits.cs" />
     <Compile Include="Models\DataModelBase.cs" />
     <Compile Include="Models\Enums.cs" />

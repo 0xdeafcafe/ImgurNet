@@ -49,8 +49,11 @@ namespace ImgurNet.Web
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
 			// Set up Query Strings
-			if (queryStrings != null)
-				endpointUri = queryStrings.ToQueryString(endpointUri);
+			if (queryStrings == null)
+				queryStrings = new Dictionary<string, string>();
+
+			queryStrings.Add("_", DateTime.UtcNow.ToUnixTimestamp().ToString());
+			endpointUri = queryStrings.ToQueryString(endpointUri);
 
 			// Create the Http Client
 			var httpClient = new HttpClient();
@@ -95,8 +98,10 @@ namespace ImgurNet.Web
 			authentication.RateLimit.UserReset = double.Parse(httpResponse.Headers.GetValue("X-RateLimit-UserReset") ?? "0").ToDateTime();
 
 			// Try parsing and validating the output
+#if DEBUG
 			try
 			{
+#endif
 				var stringResponse = await httpResponse.Content.ReadAsStringAsync();
 				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 				if (imgurResponse.Success)
@@ -104,8 +109,10 @@ namespace ImgurNet.Web
 
 				var errorImgurReponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
 				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);
+#if DEBUG
 			}
 			catch (JsonReaderException ex) { return null; }
+#endif
 		}
 				
 		/// <summary>

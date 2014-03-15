@@ -111,12 +111,12 @@ namespace ImgurNet.Models
 		/// <summary>
 		/// Bandwidth consumed by the image in bytes.
 		/// </summary>
-		public int Bandwidth
+		public Int64 Bandwidth
 		{
 			get { return _bandwidth; }
 			set { SetField(ref _bandwidth, value); }
 		}
-		private int _bandwidth;
+		private Int64 _bandwidth;
 
 		/// <summary>
 		/// OPTIONAL, the deletehash, if you're logged in as the image owner.
@@ -139,7 +139,7 @@ namespace ImgurNet.Models
 		private string _section;
 
 		/// <summary>
-		/// The direct link to the the image.
+		/// The direct link to the image.
 		/// </summary>
 		public string Link
 		{
