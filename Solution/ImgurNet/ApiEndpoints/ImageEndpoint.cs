@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using ImgurNet.Exceptions;
-using ImgurNet.Extensions;
 using ImgurNet.Models;
 using ImgurNet.Web;
 
@@ -11,10 +11,12 @@ namespace ImgurNet.ApiEndpoints
 {
 	public class ImageEndpoint
 	{
+		internal const int MaxUriLength = 32766;
+
 		#region EndPoints
 
-		private const string ImageUrl = "image/{0}";
-		private const string UploadImageUrl = "upload";
+		internal const string ImageUrl = "image/{0}";
+		internal const string UploadImageUrl = "image";
 
 		#endregion
 
@@ -53,19 +55,62 @@ namespace ImgurNet.ApiEndpoints
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			// Create query string
-			var nameCollection = new Dictionary<string, string>
-			{
-				{ "image", base64ImageData },
-				{ "type", "base64" }
-			};
-			if (albumId != null) nameCollection.Add("album", albumId);
-			if (name != null) nameCollection.Add("name", name);
-			if (title != null) nameCollection.Add("title", title);
-			if (description != null) nameCollection.Add("description", description);
+			var sb = new StringBuilder();
+			for (var i = 0; i < base64ImageData.Length; i += MaxUriLength)
+				sb.Append(base64ImageData.Substring(i, Math.Min(MaxUriLength, base64ImageData.Length - i)));
 
-			return await Request.SubmitRequest<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication,
-				content: new StringContent(nameCollection.ToStringCollection()));
+			var keyPairs = new List<KeyValuePair<string, string>>
+			{
+				new KeyValuePair<string, string>("image", base64ImageData),
+				new KeyValuePair<string, string>("type", "base64")
+			};
+			if (albumId != null) keyPairs.Add(new KeyValuePair<string, string>(albumId, albumId));
+			if (name != null) keyPairs.Add(new KeyValuePair<string, string>("name", name));
+			if (title != null) keyPairs.Add(new KeyValuePair<string, string>("title", title));
+			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			return await Request.SubmitRequest<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+		}
+
+		#endregion
+
+		#region Upload Image From Url
+
+		public async Task<ImgurResponse<Image>> UploadImageFromUrl(string url,
+			string albumId = null, string name = null, string title = null, string description = null)
+		{
+			return await UploadImageFromUrl(new Uri(url), albumId, name, title, description);
+		}
+
+		public async Task<ImgurResponse<Image>> UploadImageFromUrl(Uri uri,
+			string albumId = null, string name = null, string title = null, string description = null)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var keyPairs = new List<KeyValuePair<string, string>>
+			{
+				new KeyValuePair<string, string>("image", uri.ToString()),
+				new KeyValuePair<string, string>("type", "url")
+			};
+			if (albumId != null) keyPairs.Add(new KeyValuePair<string, string>(albumId, albumId));
+			if (name != null) keyPairs.Add(new KeyValuePair<string, string>("name", name));
+			if (title != null) keyPairs.Add(new KeyValuePair<string, string>("title", title));
+			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			return await Request.SubmitRequest<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+		}
+
+		#endregion
+
+		#region Upload Image From Binary
+
+		public async Task<ImgurResponse<Image>> UploadImageFromBinary(byte[] imageBinary,
+			string albumId = null, string name = null, string title = null, string description = null)
+		{
+			return await UploadImageFromBase64(Convert.ToBase64String(imageBinary), albumId, name, title, description);
 		}
 
 		#endregion

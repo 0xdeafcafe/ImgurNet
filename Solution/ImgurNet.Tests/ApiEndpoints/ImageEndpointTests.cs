@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
+using ImgurNet.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.ApiEndpoints
@@ -34,14 +35,51 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestImageUpload()
+		public async Task TestImageUploadFromBinary()
 		{
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
-			var base64ImageString = Convert.ToBase64String(File.ReadAllBytes(filePath));
+			var imageBinary = File.ReadAllBytes(filePath);
+			//const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
 
 			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
-			var response = await imageEndpoint.UploadImageFromBase64(base64ImageString, name: "yolo");
+
+			try
+			{
+				var response = await imageEndpoint.UploadImageFromBinary(imageBinary, title: "yolo", description: "Keep Calm, because yolo #420");
+
+				// Assert the Reponse
+				Assert.IsNotNull(response.Data);
+				Assert.AreEqual(response.Success, true);
+				Assert.AreEqual(response.Status, HttpStatusCode.OK);
+			}
+			catch (ImgurResponseFailedException exception)
+			{
+				Assert.Fail(exception.ImgurResponse.Data.ErrorDescription);
+			}
+		}
+
+		[TestMethod]
+		public async Task TestImageUploadFromUrl()
+		{
+			const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
+
+			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93"));
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			try
+			{
+				var response = await imageEndpoint.UploadImageFromUrl(imageUrl, title: "yolo", description: "Keep Calm, because yolo #420");
+
+				// Assert the Reponse
+				Assert.IsNotNull(response.Data);
+				Assert.AreEqual(response.Success, true);
+				Assert.AreEqual(response.Status, HttpStatusCode.OK);
+			}
+			catch (ImgurResponseFailedException exception)
+			{
+				Assert.Fail(exception.ImgurResponse.Data.ErrorDescription);
+			}
 		}
 	}
 }

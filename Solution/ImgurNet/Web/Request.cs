@@ -79,7 +79,8 @@ namespace ImgurNet.Web
 					httpResponse = await httpClient.GetAsync(endpointUri);
 					break;
 				case HttpMethod.Post:
-					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new StringContent(""));
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new MultipartFormDataContent());
 					break;
 				default:
 					throw new NotImplementedException("Soon.");

@@ -10,7 +10,7 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region EndPoints
 
-		private const string AccountUrl = "account/{0}";
+		internal const string AccountUrl = "account/{0}";
 
 		#endregion
 
