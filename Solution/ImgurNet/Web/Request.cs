@@ -73,6 +73,9 @@ namespace ImgurNet.Web
 					if (oAuth2Authentication == null)
 						throw new InvalidDataException("This should not have happened. The authentication interface is not of type OAuth2Authentication, yet it's type says it is. PANIC. (nah, just tweet @alexerax).");
 
+					if (oAuth2Authentication.HasExpired)
+						throw new OAuthExpiredException(oAuth2Authentication, "Your OAuth AccessToken has expired.");
+
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization",
 						String.Format("Bearer {0}", oAuth2Authentication.AccessToken));
 					break;
@@ -117,16 +120,34 @@ namespace ImgurNet.Web
 				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);
 #if DEBUG
 			}
-			catch (JsonReaderException ex) { return null; }
+			catch (JsonReaderException) { return null; }
 #endif
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="httpMethod"></param>
+		/// <param name="endpointUrl"></param>
+		/// <param name="queryStrings"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
 		internal async static Task<T> SubmitGenericRequestAsync<T>(HttpMethod httpMethod, string endpointUrl, 
 			Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
 			return await SubmitGenericRequestAsync<T>(httpMethod, new Uri(endpointUrl), queryStrings, content);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="httpMethod"></param>
+		/// <param name="endpointUri"></param>
+		/// <param name="queryStrings"></param>
+		/// <param name="content"></param>
+		/// <returns></returns>
 		internal async static Task<T> SubmitGenericRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
 			Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
