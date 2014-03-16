@@ -42,7 +42,7 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitRequestAsync<Album>(Request.HttpMethod.Get, String.Format(AlbumUrl, albumId), Imgur.Authentication);
+					Request.SubmitImgurRequestAsync<Album>(Request.HttpMethod.Get, String.Format(AlbumUrl, albumId), Imgur.Authentication);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitRequestAsync<Image[]>(Request.HttpMethod.Get, String.Format(AlbumImagesUrl, albumId), Imgur.Authentication);
+					Request.SubmitImgurRequestAsync<Image[]>(Request.HttpMethod.Get, String.Format(AlbumImagesUrl, albumId), Imgur.Authentication);
 		}
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitRequestAsync<Image>(Request.HttpMethod.Get, String.Format(AlbumImageUrl, albumId, imageId), Imgur.Authentication);
+					Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(AlbumImageUrl, albumId, imageId), Imgur.Authentication);
 		}
 	}
 }

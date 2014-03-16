@@ -18,7 +18,7 @@ namespace ImgurNet.Web
 		/// 
 		/// </summary>
 		internal static readonly string ImgurApiV3Base = "https://api.imgur.com/3/{0}";
-
+		
 		/// <summary>
 		/// 
 		/// </summary>
@@ -29,10 +29,10 @@ namespace ImgurNet.Web
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		internal async static Task<ImgurResponse<T>> SubmitRequestAsync<T>(HttpMethod httpMethod, string endpointUrl,
+		internal async static Task<ImgurResponse<T>> SubmitImgurRequestAsync<T>(HttpMethod httpMethod, string endpointUrl,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
-			return await SubmitRequestAsync<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
+			return await SubmitImgurRequestAsync<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace ImgurNet.Web
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
 		/// <returns></returns>
-		private async static Task<ImgurResponse<T>> SubmitRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
+		private async static Task<ImgurResponse<T>> SubmitImgurRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
 			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
 		{
 			// Set up Query Strings
@@ -119,6 +119,49 @@ namespace ImgurNet.Web
 			}
 			catch (JsonReaderException ex) { return null; }
 #endif
+		}
+
+		internal async static Task<T> SubmitGenericRequestAsync<T>(HttpMethod httpMethod, string endpointUrl, 
+			Dictionary<string, string> queryStrings = null, HttpContent content = null)
+		{
+			return await SubmitGenericRequestAsync<T>(httpMethod, new Uri(endpointUrl), queryStrings, content);
+		}
+
+		internal async static Task<T> SubmitGenericRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
+			Dictionary<string, string> queryStrings = null, HttpContent content = null)
+		{
+			// Set up Query Strings
+			if (queryStrings == null)
+				queryStrings = new Dictionary<string, string>();
+
+			queryStrings.Add("_", DateTime.UtcNow.ToUnixTimestamp().ToString());
+			endpointUri = queryStrings.ToQueryString(endpointUri);
+
+			// Create the Http Client
+			var httpClient = new HttpClient();
+			HttpResponseMessage httpResponse;
+			switch (httpMethod)
+			{
+				case HttpMethod.Get:
+					httpResponse = await httpClient.GetAsync(endpointUri);
+					break;
+				case HttpMethod.Post:
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new MultipartFormDataContent());
+					break;
+				case HttpMethod.Delete:
+					httpResponse = await httpClient.DeleteAsync(endpointUri);
+					break;
+				default:
+					throw new NotImplementedException("Soon.");
+			}
+
+			// Try parsing and validating the output
+			var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+			if (!stringResponse.Contains("{\"data\":{\"error\":")) return JsonConvert.DeserializeObject<T>(stringResponse);
+
+			var imgurFailedResponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
+			throw new ImgurResponseFailedException(imgurFailedResponse, imgurFailedResponse.Data.ErrorDescription);
 		}
 				
 		/// <summary>

@@ -28,7 +28,7 @@ namespace ImgurNet.Authentication
 
 			RateLimit = new Credits();
 			if (!checkRateLimit) return;
-			AsyncHelper.RunSync(() => Request.SubmitRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this));
+			AsyncHelper.RunSync(() => Request.SubmitImgurRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this));
 		}
 		
 		/// <summary>

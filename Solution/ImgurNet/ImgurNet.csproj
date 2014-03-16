@@ -39,6 +39,7 @@
     <Compile Include="Attributes\ReadOnlyRequest.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\ClientAuthentication.cs" />
+    <Compile Include="Authentication\OAuth2Authentication.cs" />
     <Compile Include="Converters\Generic\UnixTimestampConverters.cs" />
     <Compile Include="Converters\Json\UnixDateTimeConverter.cs" />
     <Compile Include="Exceptions\ImgurResponseFailedException.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImgurResponse.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Models\OAuthTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Request.cs" />
   </ItemGroup>

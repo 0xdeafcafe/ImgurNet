@@ -44,7 +44,7 @@ namespace ImgurNet.ApiEndpoints
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace ImgurNet.ApiEndpoints
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
 		}
 
 		#region Upload Base64 Image
@@ -83,7 +83,7 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
 		}
 
 		#endregion
@@ -107,7 +107,7 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
 		}
 
 		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(Uri uri,

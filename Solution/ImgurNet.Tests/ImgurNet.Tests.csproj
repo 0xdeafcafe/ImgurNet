@@ -53,6 +53,7 @@
     <Compile Include="ApiEndpoints\AccountEndpointTests.cs" />
     <Compile Include="ApiEndpoints\AlbumEndpointTests.cs" />
     <Compile Include="ApiEndpoints\ImageEndpointTests.cs" />
+    <Compile Include="Authentication\OAuth2AuthenticationTests.cs" />
     <Compile Include="Authentication\ClientAuthenticationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
