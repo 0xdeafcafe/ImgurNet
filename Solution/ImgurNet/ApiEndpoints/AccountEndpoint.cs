@@ -39,9 +39,9 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		/// <summary>
-		/// 
+		/// Gets the number of images the user has uploaded.
 		/// </summary>
-		/// <param name="username"></param>
+		/// <param name="username">The username to get image count from. Can be null if using OAuth2, and it will use that account to get the details.</param>
 		/// <returns></returns>
 		public async Task<ImgurResponse<int>> GetAccountImageCount(string username = null)
 		{
