@@ -15,5 +15,8 @@ namespace ImgurNet.Tests.Models
 
 		[JsonProperty("refresh_token")]
 		public string RefreshToken { get; set; }
+
+		[JsonProperty("authorized_username")]
+		public string AuthorizedUsername { get; set; }
 	}
 }
