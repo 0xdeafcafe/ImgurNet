@@ -13,6 +13,7 @@ namespace ImgurNet.ApiEndpoints
 
 		internal const string AccountUrl =					"account/{0}";
 		internal const string AccountImageCountUrl =		"account/{0}/images/count";
+		internal const string AccountDeleteImageUrl =		"account/{0}/image/{1}";
 
 		#endregion
 
@@ -41,21 +42,37 @@ namespace ImgurNet.ApiEndpoints
 		/// <summary>
 		/// Gets the number of images the user has uploaded.
 		/// </summary>
-		/// <param name="username">The username to get image count from. Can be null if using OAuth2, and it will use that account to get the details.</param>
-		public async Task<ImgurResponse<int>> GetAccountImageCount(string username = null)
+		/// <param name="username">The username to get image count from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<int>> GetAccountImageCount(string username = "me")
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == null)
-				if (Imgur.Authentication is OAuth2Authentication)
-					username = "me";
-				else
-					throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<int>(Request.HttpMethod.Get, String.Format(AccountImageCountUrl, username),
+						Imgur.Authentication);
+		}
+
+		/// <summary>
+		/// Deletes an image from a user's account. This always requires a deletion hash.
+		/// </summary>
+		/// <param name="deletionHash">The deletion hash for the image.</param>
+		/// <param name="username">The username of the account to delete from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<Boolean>> DeleteAccountImage(string deletionHash, string username = "me")
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AccountDeleteImageUrl, username, deletionHash),
 						Imgur.Authentication);
 		}
 	}

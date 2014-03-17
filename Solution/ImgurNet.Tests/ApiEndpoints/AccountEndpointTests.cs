@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
@@ -74,6 +75,31 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.IsNotNull(accountImageCount.Data);
 			Assert.AreEqual(accountImageCount.Success, true);
 			Assert.AreEqual(accountImageCount.Status, HttpStatusCode.OK);
+		}
+
+		[TestMethod]
+		public async Task TestDeleteAccountImage()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			// Upload Image
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+			var image = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
+
+			// Delete Image
+			var deletedImage = await accountEndpoint.DeleteAccountImage(image.Data.DeleteHash);
+
+			// Assert the Reponse
+			Assert.IsNotNull(deletedImage.Data);
+			Assert.AreEqual(deletedImage.Success, true);
+			Assert.AreEqual(deletedImage.Status, HttpStatusCode.OK);
+			Assert.AreEqual(deletedImage.Data, true);
 		}
 	}
 }
