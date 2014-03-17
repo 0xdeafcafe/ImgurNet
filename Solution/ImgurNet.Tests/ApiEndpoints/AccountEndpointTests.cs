@@ -23,7 +23,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var response = await accountEndpoint.GetAccountDetailsAsync("xerax");
 
-			// Assert the Reponse
+			// Assert the Response
 			Assert.IsNotNull(response.Data);
 			Assert.AreEqual(response.Success, true);
 			Assert.AreEqual(response.Status, HttpStatusCode.OK);
@@ -40,14 +40,14 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			ImgurResponse<Account> imgurReponse = null;
+			ImgurResponse<Account> imgurResponse = null;
 			try
 			{
-				imgurReponse = await accountEndpoint.GetAccountDetailsAsync("black-dicks (this account doesn't exist, perfect for le test)");
+				imgurResponse = await accountEndpoint.GetAccountDetailsAsync("black-dicks (this account doesn't exist, perfect for le test)");
 			}
 			catch (ImgurResponseFailedException exception)
 			{
-				// Assert the Reponse
+				// Assert the Response
 				Assert.IsNotNull(exception.ImgurResponse.Data);
 				Assert.AreEqual(exception.ImgurResponse.Success, false);
 				Assert.AreEqual(exception.ImgurResponse.Status, HttpStatusCode.BadRequest);
@@ -58,7 +58,25 @@ namespace ImgurNet.Tests.ApiEndpoints
 				Assert.AreEqual(exception.ImgurResponse.Data.Request, "/3/account/black-dicks (this account doesn't exist, perfect for le test)");
 			}
 
-			Assert.IsNull(imgurReponse);
+			Assert.IsNull(imgurResponse);
+		}
+
+		[TestMethod]
+		public async Task TestGetAccountImageDetails()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountImageCount = await accountEndpoint.GetAccountImageIds();
+			if (accountImageCount.Data.Length == 0) return;
+			var accountImageDetails = await accountEndpoint.GetAccountImageDetails(accountImageCount.Data[0]);
+
+			// Assert the Response
+			Assert.IsNotNull(accountImageDetails.Data);
+			Assert.AreEqual(accountImageDetails.Success, true);
+			Assert.AreEqual(accountImageDetails.Status, HttpStatusCode.OK);
 		}
 
 		[TestMethod]
@@ -71,7 +89,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImageCount = await accountEndpoint.GetAccountImageIds();
 
-			// Assert the Reponse
+			// Assert the Response
 			Assert.IsNotNull(accountImageCount.Data);
 			Assert.AreEqual(accountImageCount.Success, true);
 			Assert.AreEqual(accountImageCount.Status, HttpStatusCode.OK);
@@ -87,7 +105,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImageCount = await accountEndpoint.GetAccountImageCount();
 
-			// Assert the Reponse
+			// Assert the Response
 			Assert.IsNotNull(accountImageCount.Data);
 			Assert.AreEqual(accountImageCount.Success, true);
 			Assert.AreEqual(accountImageCount.Status, HttpStatusCode.OK);
@@ -111,7 +129,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			// Delete Image
 			var deletedImage = await accountEndpoint.DeleteAccountImage(image.Data.DeleteHash);
 
-			// Assert the Reponse
+			// Assert the Response
 			Assert.IsNotNull(deletedImage.Data);
 			Assert.AreEqual(deletedImage.Success, true);
 			Assert.AreEqual(deletedImage.Status, HttpStatusCode.OK);

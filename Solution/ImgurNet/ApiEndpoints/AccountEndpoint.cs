@@ -13,6 +13,7 @@ namespace ImgurNet.ApiEndpoints
 
 		internal const string AccountUrl =					"account/{0}";
 		internal const string AccountDeleteImageUrl =		"account/{0}/image/{1}";
+		internal const string AccountImageDetailsUrl =		"account/{0}/image/{1}";
 		internal const string AccountImageIdsUrl =			"account/{0}/images/ids";
 		internal const string AccountImageCountUrl =		"account/{0}/images/count";
 
@@ -38,6 +39,26 @@ namespace ImgurNet.ApiEndpoints
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			return await Request.SubmitImgurRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
+		}
+
+
+		/// <summary>
+		/// Gets the Details of an image uploaded by an account.
+		/// </summary>
+		/// <param name="imageId">The Id of the image to get details from</param>
+		/// <param name="username">The username to get the image from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<Image>> GetAccountImageDetails(string imageId, string username = "me")
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(AccountImageDetailsUrl, username, imageId),
+						Imgur.Authentication);
 		}
 
 		/// <summary>
