@@ -59,6 +59,7 @@
     <Compile Include="ApiEndpoints\ImageEndpointTests.cs" />
     <Compile Include="Authentication\OAuth2AuthenticationTests.cs" />
     <Compile Include="Authentication\ClientAuthenticationTests.cs" />
+    <Compile Include="Helpers\OAuthHelpers.cs" />
     <Compile Include="Helpers\VariousFunctions.cs" />
     <Compile Include="Models\TestSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

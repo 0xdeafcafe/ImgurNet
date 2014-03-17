@@ -24,5 +24,10 @@ namespace ImgurNet.Tests.Helpers
 
 			return JsonConvert.DeserializeObject<TestSettings>(File.ReadAllText(GetTestsDirectory() + "settings.json"));
 		}
+
+		public static void SaveTestSettings(TestSettings settings)
+		{
+			File.WriteAllText(GetTestsDirectory() + "settings.json", JsonConvert.SerializeObject(settings));
+		}
 	}
 }
