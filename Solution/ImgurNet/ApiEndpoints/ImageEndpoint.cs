@@ -89,7 +89,7 @@ namespace ImgurNet.ApiEndpoints
 		/// Adds/Removes an image from the authenticated user's favourites. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint.
 		/// </summary>
 		/// <param name="imageId">The ImageId of the image you want to favourite.</param>
-		/// <returns>An enum declaring the state of the favourite.</returns>
+		/// <returns>An bool declaring if the item is now favourited.</returns>
 		public async Task<ImgurResponse<Boolean>> FavouriteImageAsync(string imageId)
 		{
 			if (Imgur.Authentication == null)
@@ -110,7 +110,6 @@ namespace ImgurNet.ApiEndpoints
 				Success = response.Success
 			};
 		}
-
 
 		#region Upload Base64 Image
 

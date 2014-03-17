@@ -112,7 +112,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		{
 			var settings = VariousFunctions.LoadTestSettings();
 
-			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
 			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));

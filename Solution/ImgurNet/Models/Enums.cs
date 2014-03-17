@@ -18,5 +18,20 @@
 			Token,
 			Pin
 		}
+
+		public enum Privacy
+		{
+			Public,
+			Hidden,
+			Secret
+		}
+
+		public enum AlbumLayout
+		{
+			Blog,
+			Grid,
+			Horizontal,
+			Vertical
+		}
 	}
 }
