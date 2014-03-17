@@ -14,6 +14,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string AccountUrl =					"account/{0}";
 
 		// Albums
+		internal const string AccountAlbumDetailsUrl =		"account/{0}/album/{1}";
 		internal const string AccountAlbumsUrl =			"account/{0}/albums/{1}";
 
 
@@ -66,6 +67,25 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Album[]>(Request.HttpMethod.Get, String.Format(AccountAlbumsUrl, username, page),
+						Imgur.Authentication);
+		}
+
+		/// <summary>
+		/// Gets the Details of an album uploaded by an account.
+		/// </summary>
+		/// <param name="albumId">The Id of the album to get details from</param>
+		/// <param name="username">The username to get the album from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<Album>> GetAccountAlbumDetails(string albumId, string username = "me")
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Album>(Request.HttpMethod.Get, String.Format(AccountAlbumDetailsUrl, username, albumId),
 						Imgur.Authentication);
 		}
 
