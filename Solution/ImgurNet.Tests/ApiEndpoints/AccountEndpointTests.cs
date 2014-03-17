@@ -98,6 +98,22 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(accountAlbum.Status, HttpStatusCode.OK);
 		}
 
+		[TestMethod]
+		public async Task TestGetAccountAlbumIds()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountAlbumIds = await accountEndpoint.GetAccountAlbumIds();
+
+			// Assert the Response
+			Assert.IsNotNull(accountAlbumIds.Data);
+			Assert.AreEqual(accountAlbumIds.Success, true);
+			Assert.AreEqual(accountAlbumIds.Status, HttpStatusCode.OK);
+		}
+
 		#endregion
 
 		#region Image Specific Endpoint Tests
