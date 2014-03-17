@@ -12,6 +12,12 @@ namespace ImgurNet.ApiEndpoints
 		#region EndPoints
 
 		internal const string AccountUrl =					"account/{0}";
+
+		// Albums
+		internal const string AccountAlbumsUrl =			"account/{0}/albums/{1}";
+
+
+		// Images
 		internal const string AccountDeleteImageUrl =		"account/{0}/image/{1}";
 		internal const string AccountImageDetailsUrl =		"account/{0}/image/{1}";
 		internal const string AccountImagesUrl =			"account/{0}/images/{1}";
@@ -42,13 +48,36 @@ namespace ImgurNet.ApiEndpoints
 			return await Request.SubmitImgurRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
 		}
 
+		#region Album Specific Endpoints
+
+		/// <summary>
+		/// Gets all albums uploaded by an account. This endpoint is pagniated.
+		/// </summary>
+		/// <param name="page">The page of albums to load.</param>
+		/// <param name="username">The username to get the album from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<Album[]>> GetAccountAlbums(int page = 0, string username = "me")
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Album[]>(Request.HttpMethod.Get, String.Format(AccountAlbumsUrl, username, page),
+						Imgur.Authentication);
+		}
+
+		#endregion
+
 		#region Image Specific Endpoints
 
 		/// <summary>
-		/// Gets all pictures uploaded by an account. This endpoint is pagniated.
+		/// Gets all images uploaded by an account. This endpoint is pagniated.
 		/// </summary>
 		/// <param name="page">The page of images to load.</param>
-		/// <param name="username">The username to get the image from. Can be ignored if using OAuth2, and it will use that account.</param>
+		/// <param name="username">The username to get the images from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Image[]>> GetAccountImages(int page = 0, string username = "me")
 		{
 			if (Imgur.Authentication == null)
