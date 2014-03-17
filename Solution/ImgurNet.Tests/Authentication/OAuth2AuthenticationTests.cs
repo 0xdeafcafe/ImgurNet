@@ -2,6 +2,7 @@
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
 using ImgurNet.Models;
+using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.Authentication
@@ -12,8 +13,10 @@ namespace ImgurNet.Tests.Authentication
 		[TestMethod]
 		public async Task TestPinAuth()
 		{
+			var settings = VariousFunctions.LoadTestSettings();
+
 			// Create a new OAuth2 Authentication
-			var oAuth2Authentication = new OAuth2Authentication("8db03472c3a6e93", "01d1e791eb9616f7cbb3e01f81691ea5d316f57e", false);
+			var oAuth2Authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
 			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(Enums.OAuth2Type.Pin, "dicks");
 			var pin = "1234";
 			try
@@ -29,8 +32,10 @@ namespace ImgurNet.Tests.Authentication
 		[TestMethod]
 		public async Task TestCodeAuth()
 		{
+			var settings = VariousFunctions.LoadTestSettings();
+
 			// Create a new OAuth2 Authentication
-			var oAuth2Authentication = new OAuth2Authentication("8db03472c3a6e93", "01d1e791eb9616f7cbb3e01f81691ea5d316f57e", false);
+			var oAuth2Authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
 			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(Enums.OAuth2Type.Code, "dicks");
 			var code = "1234";
 			try

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
+using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.ApiEndpoints
@@ -12,7 +13,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAlbumDetails()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var response = await albumEndpoint.GetAlbumDetailsAsync("IPPAY");
 
@@ -30,7 +33,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAllImagesFromAlbum()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var albumDetails = await albumEndpoint.GetAlbumDetailsAsync("IPPAY");
 			var albumImages = await albumEndpoint.GetAllImagesFromAlbumAsync(albumDetails.Data.Id);
@@ -47,7 +52,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetImageFromAlbum()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var albumImage = await albumEndpoint.GetImageFromAlbumAsync("IPPAY", "66LxpQn");
 

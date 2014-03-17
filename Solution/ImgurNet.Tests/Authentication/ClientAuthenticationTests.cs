@@ -1,5 +1,6 @@
 ﻿using System;
 using ImgurNet.Authentication;
+using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.Authentication
@@ -25,8 +26,10 @@ namespace ImgurNet.Tests.Authentication
 		[TestMethod]
 		public void TestRateLimitInitalization()
 		{
+			var settings = VariousFunctions.LoadTestSettings();
+
 			// Create a new Client Authentication based off of the ClientId
-			var clientAuthentication = new ClientAuthentication("8db03472c3a6e93", true);
+			var clientAuthentication = new ClientAuthentication(settings.ClientId, true);
 			
 			// Validate rate limit data is correct
 			Assert.IsTrue(clientAuthentication.RateLimit.ClientLimit > 0);

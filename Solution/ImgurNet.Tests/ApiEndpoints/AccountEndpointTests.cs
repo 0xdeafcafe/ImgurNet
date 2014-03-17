@@ -5,6 +5,7 @@ using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
 using ImgurNet.Models;
+using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.ApiEndpoints
@@ -15,7 +16,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestAccountGet()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var response = await accountEndpoint.GetAccountDetailsAsync("xerax");
 
@@ -32,7 +35,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestBadAccountGet()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			ImgurResponse<Account> imgurReponse = null;
 			try

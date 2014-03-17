@@ -1,0 +1,6 @@
+﻿{ 
+    "username": "Insert your imgur account username here",
+    "password": "Insert your imgur account password here",
+    "client_id": "Insert your imgur client_id here",
+    "client_secret": "Insert your imgur client_secret here"
+}

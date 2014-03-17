@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
+using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImgurNet.Tests.ApiEndpoints
@@ -15,7 +16,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetImageDetails()
 		{
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var settings = VariousFunctions.LoadTestSettings();
+
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 			var response = await imageEndpoint.GetImageDetailsAsync("F1sUnHq");
 
@@ -37,10 +40,12 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteImage()
 		{
+			var settings = VariousFunctions.LoadTestSettings();
+
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
 			var response = await imageEndpoint.DeleteImageAsync(uploadedImage.Data.DeleteHash);
@@ -55,10 +60,12 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestImageUploadFromBinary()
 		{
+			var settings = VariousFunctions.LoadTestSettings();
+
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try
@@ -79,9 +86,10 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestImageUploadFromUrl()
 		{
-			const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
+			var settings = VariousFunctions.LoadTestSettings();
 
-			var imgurClient = new Imgur(new ClientAuthentication("8db03472c3a6e93", false));
+			const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
+			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try
