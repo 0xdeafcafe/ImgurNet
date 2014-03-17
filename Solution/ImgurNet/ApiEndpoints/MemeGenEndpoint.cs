@@ -24,6 +24,9 @@ namespace ImgurNet.ApiEndpoints
 			Imgur = imgur;
 		}
 
+		/// <summary>
+		/// Get the list of default memes.
+		/// </summary>
 		public async Task<ImgurResponse<Image[]>> GetDefaultMemes()
 		{
 			if (Imgur.Authentication == null)
