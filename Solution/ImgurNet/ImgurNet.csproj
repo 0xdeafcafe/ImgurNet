@@ -40,6 +40,7 @@
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\ClientAuthentication.cs" />
     <Compile Include="Authentication\OAuth2Authentication.cs" />
+    <Compile Include="Helpers\EnumUtilities.cs" />
     <Compile Include="Converters\Generic\UnixTimestampConverters.cs" />
     <Compile Include="Converters\Json\UnixDateTimeConverter.cs" />
     <Compile Include="Exceptions\ImgurResponseFailedException.cs" />

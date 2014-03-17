@@ -17,17 +17,30 @@ namespace ImgurNet.Tests.Helpers
 			return AppDomain.CurrentDomain.BaseDirectory + @"\Assets\";
 		}
 
+		public static string GetTestsProjectDirectory()
+		{
+			var directoryInfo = Directory.GetParent(Directory.GetCurrentDirectory()).Parent;
+			if (directoryInfo != null)
+				if (directoryInfo.Parent != null) 
+					return directoryInfo.FullName + @"\";
+
+			throw new Exception("dicks");
+		}
+
 		public static TestSettings LoadTestSettings()
 		{
 			if (!File.Exists(GetTestsDirectory() + "settings.json"))
 				throw new InvalidOperationException("The settings file is not present. Rename example.settings.json to settings.json and fill it with the correct data.");
-
+			
 			return JsonConvert.DeserializeObject<TestSettings>(File.ReadAllText(GetTestsDirectory() + "settings.json"));
 		}
 
 		public static void SaveTestSettings(TestSettings settings)
 		{
-			File.WriteAllText(GetTestsDirectory() + "settings.json", JsonConvert.SerializeObject(settings));
+			var jsonString = JsonConvert.SerializeObject(settings);
+
+			File.WriteAllText(GetTestsDirectory() + "settings.json", jsonString);
+			File.WriteAllText(GetTestsProjectDirectory() + "settings.json", jsonString);
 		}
 	}
 }

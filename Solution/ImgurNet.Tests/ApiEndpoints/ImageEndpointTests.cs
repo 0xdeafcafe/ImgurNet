@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
+using ImgurNet.Models;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -83,6 +84,30 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(editedImageResponse.Data, true);
 		}
 
+		[TestMethod]
+		public async Task TestFavouriteImageTask()
+		{
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
+			var favouritedImageResponse = await imageEndpoint.FavouriteImageAsync(uploadedImage.Data.Id);
+
+			// Assert the Reponse
+			Assert.IsNotNull(favouritedImageResponse.Data);
+			Assert.AreEqual(favouritedImageResponse.Success, true);
+			Assert.AreEqual(favouritedImageResponse.Status, HttpStatusCode.OK);
+
+			// Assert the Data
+			Assert.AreEqual(favouritedImageResponse.Data, true);
+		}
+		
 		[TestMethod]
 		public async Task TestImageUploadFromBinary()
 		{

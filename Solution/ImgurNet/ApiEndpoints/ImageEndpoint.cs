@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
+using ImgurNet.Helpers;
 using ImgurNet.Models;
 using ImgurNet.Web;
 
@@ -83,6 +85,33 @@ namespace ImgurNet.ApiEndpoints
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, String.Format(ImageUrl, imageId),
 						Imgur.Authentication, content: multi);
 		}
+
+		/// <summary>
+		/// Adds/Removes an image from the authenticated user's favourites. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint.
+		/// </summary>
+		/// <param name="imageId">The ImageId of the image you want to favourite.</param>
+		/// <returns>An enum declaring the state of the favourite.</returns>
+		public async Task<ImgurResponse<Boolean>> FavouriteImageAsync(string imageId)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var response =
+				await
+					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(FavouriteImageUrl, imageId),
+						Imgur.Authentication);
+
+			return new ImgurResponse<Boolean>
+			{
+				Data = (response.Data.ToLowerInvariant() == "favorited"),
+				Status = response.Status,
+				Success = response.Success
+			};
+		}
+
 
 		#region Upload Base64 Image
 

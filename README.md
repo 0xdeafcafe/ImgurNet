@@ -16,7 +16,7 @@ This is the current status of how much of the Imgur Api set has been completed:
 * Album:        __(3/10)__
 * Comment:      __(0/7)__
 * Gallery:      __(0/20)__
-* Image:        __(4/5)__
+* Image:        __(5/5)__
 * Conversation: __(0/6)__
 * Notification: __(0/3)__
 * Memegen:      __(0/1)__
