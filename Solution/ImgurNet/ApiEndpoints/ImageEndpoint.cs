@@ -60,6 +60,29 @@ namespace ImgurNet.ApiEndpoints
 			return await Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="imageId"></param>
+		/// <param name="title"></param>
+		/// <param name="description"></param>
+		/// <returns></returns>
+		public async Task<ImgurResponse<Boolean>> UpdateImageDetailsAsync(string imageId, string title = null, string description = null)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var keyPairs = new List<KeyValuePair<string, string>>();
+			if (title != null) keyPairs.Add(new KeyValuePair<string, string>("title", title));
+			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, String.Format(ImageUrl, imageId),
+						Imgur.Authentication, content: multi);
+		}
+
 		#region Upload Base64 Image
 
 		public async Task<ImgurResponse<Image>> UploadImageFromBase64Async(string base64ImageData,

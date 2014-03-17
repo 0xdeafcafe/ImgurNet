@@ -58,6 +58,32 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
+		public async Task TestUpdateImageDetails()
+		{
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
+			var imageTitle = String.Format("title-{0}", new Random().Next(0, 100));
+			var imageDescription = String.Format("description-{0}", new Random().Next(0, 100)); ;
+			var editedImageResponse = await imageEndpoint.UpdateImageDetailsAsync(uploadedImage.Data.Id, imageTitle, imageDescription);
+
+			// Assert the Reponse
+			Assert.IsNotNull(editedImageResponse.Data);
+			Assert.AreEqual(editedImageResponse.Success, true);
+			Assert.AreEqual(editedImageResponse.Status, HttpStatusCode.OK);
+
+			// Assert the Data
+			Assert.AreEqual(editedImageResponse.Data, true);
+		}
+
+		[TestMethod]
 		public async Task TestImageUploadFromBinary()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
