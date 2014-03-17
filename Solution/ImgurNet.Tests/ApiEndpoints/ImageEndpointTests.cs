@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
-using ImgurNet.Models;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

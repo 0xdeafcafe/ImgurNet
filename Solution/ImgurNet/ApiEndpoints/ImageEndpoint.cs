@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
-using ImgurNet.Helpers;
 using ImgurNet.Models;
 using ImgurNet.Web;
 

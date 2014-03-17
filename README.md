@@ -19,7 +19,7 @@ This is the current status of how much of the Imgur Api set has been completed:
 * Image:        __(5/5)__
 * Conversation: __(0/6)__
 * Notification: __(0/3)__
-* Memegen:      __(0/1)__
+* Memegen:      __(1/1)__
 
 
 This is the current status of authentication:
