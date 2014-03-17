@@ -62,6 +62,22 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
+		public async Task TestGetAccountImageIds()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountImageCount = await accountEndpoint.GetAccountImageIds();
+
+			// Assert the Reponse
+			Assert.IsNotNull(accountImageCount.Data);
+			Assert.AreEqual(accountImageCount.Success, true);
+			Assert.AreEqual(accountImageCount.Status, HttpStatusCode.OK);
+		}
+
+		[TestMethod]
 		public async Task TestGetAccountImageCount()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
