@@ -2,5 +2,7 @@
     "username": "Insert your imgur account username here",
     "password": "Insert your imgur account password here",
     "client_id": "Insert your imgur client_id here",
-    "client_secret": "Insert your imgur client_secret here"
+    "client_secret": "Insert your imgur client_secret here",
+    "access_token": "Insert your imgur access_token here", 
+    "refresh_token": "Insert your imgur refresh_token here" 
 }
