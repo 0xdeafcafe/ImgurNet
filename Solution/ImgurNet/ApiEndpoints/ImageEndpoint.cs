@@ -15,8 +15,9 @@ namespace ImgurNet.ApiEndpoints
 
 		#region EndPoints
 
-		internal const string ImageUrl = "image/{0}";
-		internal const string UploadImageUrl = "image";
+		internal const string UploadImageUrl =		"image";
+		internal const string ImageUrl =			"image/{0}";
+		internal const string FavouriteImageUrl =	"image/{0}/favorite";
 
 		#endregion
 
@@ -61,12 +62,12 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		/// <summary>
-		/// 
+		/// Updates an image that was previously uploaded. ImageId can be the Image Id, if you're signed in as the uploader, or the DeleteHash if you are not.
 		/// </summary>
-		/// <param name="imageId"></param>
-		/// <param name="title"></param>
-		/// <param name="description"></param>
-		/// <returns></returns>
+		/// <param name="imageId">The ImageId (or deletion hash) of the image to be edited.</param>
+		/// <param name="title">The string you want to set as the title of image.</param>
+		/// <param name="description">The string you want to set as the description of image.</param>
+		/// <returns>A boolean indicating if the transaction was successful.</returns>
 		public async Task<ImgurResponse<Boolean>> UpdateImageDetailsAsync(string imageId, string title = null, string description = null)
 		{
 			if (Imgur.Authentication == null)

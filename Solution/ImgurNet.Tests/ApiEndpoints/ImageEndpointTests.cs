@@ -71,7 +71,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
 			var imageTitle = String.Format("title-{0}", new Random().Next(0, 100));
-			var imageDescription = String.Format("description-{0}", new Random().Next(0, 100)); ;
+			var imageDescription = String.Format("description-{0}", new Random().Next(0, 100));
 			var editedImageResponse = await imageEndpoint.UpdateImageDetailsAsync(uploadedImage.Data.Id, imageTitle, imageDescription);
 
 			// Assert the Reponse
