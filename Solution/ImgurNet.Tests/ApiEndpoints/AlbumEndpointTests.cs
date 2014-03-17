@@ -53,8 +53,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 		public async Task TestGetImageFromAlbum()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
-
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var albumImage = await albumEndpoint.GetImageFromAlbumAsync("IPPAY", "66LxpQn");
 
