@@ -25,7 +25,7 @@ This is the current status of how much of the Imgur Api set has been completed:
 This is the current status of authentication:
 
 * ClientId Authentication __(Done)__
-* OAuth 2 Authentication __(Started work on implementation)__
+* OAuth 2 Authentication __(Done)__
 
 
 ### Contribution
