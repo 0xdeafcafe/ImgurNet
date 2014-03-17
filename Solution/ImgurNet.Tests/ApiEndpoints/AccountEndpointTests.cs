@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ImgurNet.Tests.ApiEndpoints
 {
 	[TestClass]
+	// ReSharper disable RedundantArgumentDefaultValue
 	public class AccountEndpointTests
 	{
 		[TestMethod]
@@ -59,6 +60,24 @@ namespace ImgurNet.Tests.ApiEndpoints
 			}
 
 			Assert.IsNull(imgurResponse);
+		}
+
+		#region Image Specific Endpoint Tests
+
+		[TestMethod]
+		public async Task TestGetAccountImages()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountImages = await accountEndpoint.GetAccountImages(0);
+
+			// Assert the Response
+			Assert.IsNotNull(accountImages.Data);
+			Assert.AreEqual(accountImages.Success, true);
+			Assert.AreEqual(accountImages.Status, HttpStatusCode.OK);
 		}
 
 		[TestMethod]
@@ -135,5 +154,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(deletedImage.Status, HttpStatusCode.OK);
 			Assert.AreEqual(deletedImage.Data, true);
 		}
+
+		#endregion
 	}
 }
