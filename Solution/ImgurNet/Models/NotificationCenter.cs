@@ -1,9 +1,9 @@
 ﻿namespace ImgurNet.Models
 {
-	public class NotificaionResponse : DataModelBase
+	public class NotificationCenter : DataModelBase
 	{
 		/// <summary>
-		/// 
+		/// The accounts notifications for replies
 		/// </summary>
 		public Notification<Comment>[] Replies
 		{
@@ -13,7 +13,7 @@
 		private Notification<Comment>[] _replies;
 
 		/// <summary>
-		/// 
+		/// The accounts notifications for messages
 		/// </summary>
 		public Notification<Message>[] Messages
 		{

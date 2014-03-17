@@ -31,7 +31,7 @@ namespace ImgurNet.ApiEndpoints
 		/// Get a list of all notifications from the authorized account
 		/// </summary>
 		/// <param name="onlyShowNew">Only retrieve new notifications (un-viewed)</param>
-		public async Task<ImgurResponse<NotificaionResponse>> GetNotificationsAsync(bool onlyShowNew = true)
+		public async Task<ImgurResponse<NotificationCenter>> GetNotificationsAsync(bool onlyShowNew = true)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
@@ -45,7 +45,7 @@ namespace ImgurNet.ApiEndpoints
 			};
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitImgurRequestAsync<NotificaionResponse>(Request.HttpMethod.Get, NotificationsUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitImgurRequestAsync<NotificationCenter>(Request.HttpMethod.Get, NotificationsUrl, Imgur.Authentication, content: multi);
 		}
 
 		/// <summary>
