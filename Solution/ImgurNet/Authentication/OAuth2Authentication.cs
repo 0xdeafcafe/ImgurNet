@@ -189,7 +189,7 @@ namespace ImgurNet.Authentication
 			{
 				new KeyValuePair<string, string>("client_id", ClientId),
 				new KeyValuePair<string, string>("client_secret", ClientSecret),
-				new KeyValuePair<string, string>("grant_type", GrantTypeFromOAuthType(OAuthType)),
+				new KeyValuePair<string, string>("grant_type", "refresh_token"),
 				new KeyValuePair<string, string>("refresh_token", RefreshToken)
 			};
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
