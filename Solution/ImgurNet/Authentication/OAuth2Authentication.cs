@@ -37,6 +37,11 @@ namespace ImgurNet.Authentication
 		/// </summary>
 		public string ClientSecret { get; private set; }
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public string AuthorizedUsername { get; private set; }
+
 		#region OAuth Stuff
 
 		/// <summary>
@@ -129,11 +134,13 @@ namespace ImgurNet.Authentication
 		/// <param name="accessToken">The <see cref="AccessToken"/> you recieved.</param>
 		/// <param name="refreshToken">The <see cref="RefreshToken"/> you recieved.</param>
 		/// <param name="expiresIn">The <see cref="ExpiresAt"/> you recieved.</param>
-		public void AuthorizeWithToken(string accessToken, string refreshToken, int expiresIn)
+		/// <param name="authorizedUsername">The Username of the account that has been authorized.</param>
+		public void AuthorizeWithToken(string accessToken, string refreshToken, int expiresIn, string authorizedUsername)
 		{
 			AccessToken = accessToken;
 			RefreshToken = refreshToken;
 			ExpiresAt = DateTime.UtcNow.AddSeconds(expiresIn);
+			AuthorizedUsername = authorizedUsername;
 		}
 
 		/// <summary>
@@ -156,6 +163,7 @@ namespace ImgurNet.Authentication
 			AccessToken = tokens.AccessToken;
 			RefreshToken = tokens.RefreshToken;
 			ExpiresAt = DateTime.UtcNow.AddSeconds(tokens.ExpiresIn);
+			AuthorizedUsername = tokens.AuthorizedUsername;
 		}
 
 		/// <summary>
@@ -178,6 +186,7 @@ namespace ImgurNet.Authentication
 			AccessToken = tokens.AccessToken;
 			RefreshToken = tokens.RefreshToken;
 			ExpiresAt = DateTime.UtcNow.AddSeconds(tokens.ExpiresIn);
+			AuthorizedUsername = tokens.AuthorizedUsername;
 		}
 
 		/// <summary>
@@ -199,6 +208,7 @@ namespace ImgurNet.Authentication
 			AccessToken = tokens.AccessToken;
 			RefreshToken = tokens.RefreshToken;
 			ExpiresAt = DateTime.UtcNow.AddSeconds(tokens.ExpiresIn);
+			AuthorizedUsername = tokens.AuthorizedUsername;
 		}
 
 		#endregion

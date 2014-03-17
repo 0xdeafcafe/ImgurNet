@@ -57,5 +57,16 @@ namespace ImgurNet.Models
 			set { SetField(ref _refreshToken, value); }
 		}
 		private string _refreshToken;
+
+		/// <summary>
+		/// Username of the account that is authorised
+		/// </summary>
+		[JsonProperty("account_username")]
+		public string AuthorizedUsername
+		{
+			get { return _authorizedUsername; }
+			set { SetField(ref _authorizedUsername, value); }
+		}
+		private string _authorizedUsername;
 	}
 }
