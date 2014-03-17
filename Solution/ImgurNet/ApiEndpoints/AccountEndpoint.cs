@@ -6,18 +6,13 @@ using ImgurNet.Web;
 
 namespace ImgurNet.ApiEndpoints
 {
-	public class AccountEndpoint
+	public class AccountEndpoint : BaseEndpoint
 	{
 		#region EndPoints
 
 		internal const string AccountUrl = "account/{0}";
 
 		#endregion
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public Imgur Imgur { get; private set; }
 
 		/// <summary>
 		/// 

@@ -10,7 +10,7 @@ using ImgurNet.Web;
 
 namespace ImgurNet.ApiEndpoints
 {
-	public class ImageEndpoint
+	public class ImageEndpoint : BaseEndpoint
 	{
 		internal const int MaxUriLength = 32766;
 
@@ -21,11 +21,6 @@ namespace ImgurNet.ApiEndpoints
 		internal const string FavouriteImageUrl =	"image/{0}/favorite";
 
 		#endregion
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public Imgur Imgur { get; private set; }
 
 		/// <summary>
 		/// 

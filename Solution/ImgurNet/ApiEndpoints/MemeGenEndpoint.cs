@@ -5,15 +5,13 @@ using ImgurNet.Web;
 
 namespace ImgurNet.ApiEndpoints
 {
-	public class MemeGenEndpoint
+	public class MemeGenEndpoint : BaseEndpoint
 	{
 		#region EndPoints
 
 		internal const string DefaultMemesUrl = "memegen/defaults";
 
 		#endregion
-
-		public Imgur Imgur { get; private set; }
 
 		/// <summary>
 		/// 

@@ -35,12 +35,16 @@
   <ItemGroup>
     <Compile Include="ApiEndpoints\AccountEndpoint.cs" />
     <Compile Include="ApiEndpoints\AlbumEndpoint.cs" />
+    <Compile Include="ApiEndpoints\BaseEndpoint.cs" />
+    <Compile Include="ApiEndpoints\IEndpoint.cs" />
     <Compile Include="ApiEndpoints\ImageEndpoint.cs" />
     <Compile Include="ApiEndpoints\MemeGenEndpoint.cs" />
+    <Compile Include="ApiEndpoints\NotifcationEndpoint.cs" />
     <Compile Include="Attributes\ReadOnlyRequest.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\ClientAuthentication.cs" />
     <Compile Include="Authentication\OAuth2Authentication.cs" />
+    <Compile Include="Converters\Json\BoolConverter.cs" />
     <Compile Include="Helpers\EnumUtilities.cs" />
     <Compile Include="Converters\Generic\UnixTimestampConverters.cs" />
     <Compile Include="Converters\Json\UnixDateTimeConverter.cs" />
@@ -51,6 +55,10 @@
     <Compile Include="Extensions\HttpResponseHeadersExtensions.cs" />
     <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Imgur.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\NotificaionResponse.cs" />
+    <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Credits.cs" />

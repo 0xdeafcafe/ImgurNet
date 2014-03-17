@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Authentication;

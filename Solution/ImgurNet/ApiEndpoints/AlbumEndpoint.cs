@@ -10,7 +10,7 @@ using ImgurNet.Web;
 
 namespace ImgurNet.ApiEndpoints
 {
-	public class AlbumEndpoint
+	public class AlbumEndpoint : BaseEndpoint
 	{
 		#region EndPoints
 
@@ -20,11 +20,6 @@ namespace ImgurNet.ApiEndpoints
 		internal const string AlbumImageUrl =		"album/{0}/image/{1}";
 
 		#endregion
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public Imgur Imgur { get; private set; }
 
 		/// <summary>
 		/// 

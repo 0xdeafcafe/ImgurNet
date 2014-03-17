@@ -92,6 +92,10 @@ namespace ImgurNet.Web
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
 					httpResponse = await httpClient.PostAsync(endpointUri, content ?? new MultipartFormDataContent());
 					break;
+				case HttpMethod.Put:
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+					httpResponse = await httpClient.PutAsync(endpointUri, content ?? new MultipartFormDataContent());
+					break;
 				case HttpMethod.Delete:
 					httpResponse = await httpClient.DeleteAsync(endpointUri);
 					break;
