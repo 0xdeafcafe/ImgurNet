@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
 using ImgurNet.Models;
 using ImgurNet.Web;
@@ -10,7 +11,8 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region EndPoints
 
-		internal const string AccountUrl = "account/{0}";
+		internal const string AccountUrl =					"account/{0}";
+		internal const string AccountImageCountUrl =		"account/{0}/images/count";
 
 		#endregion
 
@@ -34,6 +36,28 @@ namespace ImgurNet.ApiEndpoints
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			return await Request.SubmitImgurRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="username"></param>
+		/// <returns></returns>
+		public async Task<ImgurResponse<int>> GetAccountImageCount(string username = null)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == null)
+				if (Imgur.Authentication is OAuth2Authentication)
+					username = "me";
+				else
+					throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<int>(Request.HttpMethod.Get, String.Format(AccountImageCountUrl, username),
+						Imgur.Authentication);
 		}
 	}
 }

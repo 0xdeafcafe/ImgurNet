@@ -84,7 +84,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestFavouriteImageTask()
+		public async Task TestFavouriteImage()
 		{
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
@@ -108,7 +108,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 		
 		[TestMethod]
-		public async Task TestImageUploadFromBinary()
+		public async Task TestUploadImageFromBinary()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
 
@@ -134,7 +134,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestImageUploadFromUrl()
+		public async Task TestUploadImageFromUrl()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
 

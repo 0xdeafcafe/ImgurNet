@@ -14,7 +14,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 	public class AccountEndpointTests
 	{
 		[TestMethod]
-		public async Task TestAccountGet()
+		public async Task TestGetAccount()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
 
@@ -33,7 +33,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestBadAccountGet()
+		public async Task TestGetBadAccount()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
 
@@ -58,6 +58,22 @@ namespace ImgurNet.Tests.ApiEndpoints
 			}
 
 			Assert.IsNull(imgurReponse);
+		}
+
+		[TestMethod]
+		public async Task TestGetAccountImageCount()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountImageCount = await accountEndpoint.GetAccountImageCount();
+
+			// Assert the Reponse
+			Assert.IsNotNull(accountImageCount.Data);
+			Assert.AreEqual(accountImageCount.Success, true);
+			Assert.AreEqual(accountImageCount.Status, HttpStatusCode.OK);
 		}
 	}
 }
