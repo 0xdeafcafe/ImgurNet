@@ -87,23 +87,9 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="description">The description of the album</param>
 		/// <param name="privacy">The privacy mode of the album</param>
 		/// <param name="layout">The defualt layout of the album</param>
-		public async Task<ImgurResponse<Album>> CreateAlbumAsync(IEnumerable<Image> images = null, Image coverImage = null, string title = null, string description = null, Enums.Privacy privacy = Enums.Privacy.Public, Enums.AlbumLayout layout = Enums.AlbumLayout.Blog)
-		{
-			return await CreateAlbumAsync(images.ToArray(), coverImage, title, description, privacy, layout);
-		}
-
-		/// <summary>
-		/// Creates an album on imgur, if authorized with <see cref="OAuth2Authentication"/> then it will be added to the authorised.
-		/// </summary>
-		/// <param name="images">A collection of valid Image's that should be added to this album.</param>
-		/// <param name="coverImage">An Imgur Image that want to be the cover of the album (has to be in <see cref="images"/>)</param>
-		/// <param name="title">The title of the album</param>
-		/// <param name="description">The description of the album</param>
-		/// <param name="privacy">The privacy mode of the album</param>
-		/// <param name="layout">The defualt layout of the album</param>
 		public async Task<ImgurResponse<Album>> CreateAlbumAsync(Image[] images = null, Image coverImage = null, string title = null, string description = null, Enums.Privacy privacy = Enums.Privacy.Public, Enums.AlbumLayout layout = Enums.AlbumLayout.Blog)
 		{
-			return await CreateAlbumAsync(images.Select(i => i.Id).ToArray(), (coverImage == null ? null : coverImage.Id), title, description, privacy, layout);
+			return await CreateAlbumFromIdsAsync(images == null ? null : images.Select(i => i.Id).ToArray(), (coverImage == null ? null : coverImage.Id), title, description, privacy, layout);
 		}
 
 		/// <summary>
@@ -115,7 +101,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="description">The description of the album</param>
 		/// <param name="privacy">The privacy mode of the album</param>
 		/// <param name="layout">The defualt layout of the album</param>
-		public async Task<ImgurResponse<Album>> CreateAlbumAsync(string[] imageIds = null, string coverImageId = null, string title = null, string description = null, Enums.Privacy privacy = Enums.Privacy.Public, Enums.AlbumLayout layout = Enums.AlbumLayout.Blog)
+		public async Task<ImgurResponse<Album>> CreateAlbumFromIdsAsync(string[] imageIds = null, string coverImageId = null, string title = null, string description = null, Enums.Privacy privacy = Enums.Privacy.Public, Enums.AlbumLayout layout = Enums.AlbumLayout.Blog)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");

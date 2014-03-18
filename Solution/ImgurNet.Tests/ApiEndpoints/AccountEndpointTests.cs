@@ -132,6 +132,25 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(accountAlbumCount.Status, HttpStatusCode.OK);
 		}
 
+		[TestMethod]
+		public async Task TestDeleteAccountAlbum()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var albumEndpoint = new AlbumEndpoint(imgurClient);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountAlbum = await albumEndpoint.CreateAlbumAsync(title: "swag");
+			var response = await accountEndpoint.DeleteAccountAlbum(accountAlbum.Data.DeleteHash);
+
+			// Assert the Response
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+			Assert.AreEqual(response.Data, true);
+		}
+
 		#endregion
 
 		#region Image Specific Endpoint Tests

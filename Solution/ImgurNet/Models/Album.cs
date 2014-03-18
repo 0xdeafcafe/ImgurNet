@@ -62,23 +62,23 @@ namespace ImgurNet.Models
 		/// The width of the album cover image.
 		/// </summary>
 		[JsonProperty("cover_width")]
-		public int CoverWidth
+		public int? CoverWidth
 		{
 			get { return _coverWidth; }
 			set { SetField(ref _coverWidth, value); }
 		}
-		private int _coverWidth;
+		private int? _coverWidth;
 
 		/// <summary>
 		/// The height of the album cover image.
 		/// </summary>
 		[JsonProperty("cover_height")]
-		public int CoverHeight
+		public int? CoverHeight
 		{
 			get { return _coverHeight; }
 			set { SetField(ref _coverHeight, value); }
 		}
-		private int _coverHeight;
+		private int? _coverHeight;
 
 		/// <summary>
 		/// The account username or <see cref="Nullable"/> if it's anonymous.

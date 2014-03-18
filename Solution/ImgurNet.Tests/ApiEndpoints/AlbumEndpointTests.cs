@@ -91,7 +91,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var uploadedImages = new List<Image>();
 			for (var i = 0; i < 2; i++)
 				uploadedImages.Add((await imageEndpoint.UploadImageFromBinaryAsync(imageBinary)).Data);
-			var createdAlbum = await albumEndpoint.CreateAlbumAsync(uploadedImages, uploadedImages[0], title, description);
+			var createdAlbum = await albumEndpoint.CreateAlbumAsync(uploadedImages.ToArray(), uploadedImages[0], title, description);
 
 			// Assert the Reponse
 			Assert.IsNotNull(createdAlbum.Data);

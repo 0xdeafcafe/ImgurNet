@@ -14,6 +14,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string AccountUrl =					"account/{0}";
 
 		// Albums
+		internal const string AccountDeleteAlbumUrl =		"account/{0}/album/{1}";
 		internal const string AccountAlbumDetailsUrl =		"account/{0}/album/{1}";
 		internal const string AccountAlbumsUrl =			"account/{0}/albums/{1}";
 		internal const string AccountAlbumIdsUrl =			"account/{0}/albums/ids";
@@ -124,6 +125,25 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<int>(Request.HttpMethod.Get, String.Format(AccountAlbumCountUrl, username),
+						Imgur.Authentication);
+		}
+		
+		/// <summary>
+		/// Deletes an album from a user's account. This always requires a deletion hash.
+		/// </summary>
+		/// <param name="deletionHash">The deletion hash for the album.</param>
+		/// <param name="username">The username of the account to delete from. Can be ignored if using OAuth2, and it will use that account.</param>
+		public async Task<ImgurResponse<Boolean>> DeleteAccountAlbum(string deletionHash, string username = "me")
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AccountDeleteAlbumUrl, username, deletionHash),
 						Imgur.Authentication);
 		}
 
