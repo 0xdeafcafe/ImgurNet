@@ -124,9 +124,9 @@ namespace ImgurNet.ApiEndpoints
 		#endregion
 
 		/// <summary>
-		/// 
+		/// Delete an album with a deletion hash
 		/// </summary>
-		/// <param name="albumDeletionHash"></param>
+		/// <param name="albumDeletionHash">The deletion hash of the album</param>
 		/// <returns></returns>
 		public async Task<ImgurResponse<Boolean>> DeleteAlbumAsync(string albumDeletionHash)
 		{
