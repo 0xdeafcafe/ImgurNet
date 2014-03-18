@@ -125,5 +125,25 @@ namespace ImgurNet.Tests.ApiEndpoints
 			// Assert the data
 			Assert.AreEqual(deletedAlbum.Data, true);
 		}
+
+		[TestMethod]
+		public async Task TestFavouriteAlbum()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var albumEndpoint = new AlbumEndpoint(imgurClient);
+			var createdAlbum = await albumEndpoint.CreateAlbumAsync();
+			var favourited = await albumEndpoint.FavouriteAlbumAsync(createdAlbum.Data.Id);
+
+			// Assert the Reponse
+			Assert.IsNotNull(favourited.Data);
+			Assert.AreEqual(favourited.Success, true);
+			Assert.AreEqual(favourited.Status, HttpStatusCode.OK);
+
+			// Assert the data
+			Assert.AreEqual(favourited.Data, true);
+		}
 	}
 }

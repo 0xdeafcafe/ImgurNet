@@ -17,6 +17,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string CreateAlbumUrl =		"album/";
 		internal const string AlbumUrl =			"album/{0}";
 		internal const string AlbumImagesUrl =		"album/{0}/images";
+		internal const string AlbumFavouriteUrl =	"album/{0}/favorite";
 		internal const string AlbumImageUrl =		"album/{0}/image/{1}";
 
 		#endregion
@@ -136,6 +137,32 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AlbumUrl, albumDeletionHash), Imgur.Authentication);
+		}
+
+		/// <summary>
+		/// Adds/Removes an album from the authenticated user's favourites. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint.
+		/// </summary>
+		/// <param name="albumId">The AlbumId of the image you want to favourite.</param>
+		/// <returns>An bool declaring if the item is now favourited.</returns>
+		public async Task<ImgurResponse<Boolean>> FavouriteAlbumAsync(string albumId)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var response =
+				await
+					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(AlbumFavouriteUrl, albumId),
+						Imgur.Authentication);
+
+			return new ImgurResponse<Boolean>
+			{
+				Data = (response.Data.ToLowerInvariant() == "favorited"),
+				Status = response.Status,
+				Success = response.Success
+			};
 		}
 	}
 }
