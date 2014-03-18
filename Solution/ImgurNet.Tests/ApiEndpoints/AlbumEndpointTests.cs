@@ -126,5 +126,32 @@ namespace ImgurNet.Tests.ApiEndpoints
 			// Assert the data
 			Assert.AreEqual(favourited.Data, true);
 		}
+
+		[TestMethod]
+		public async Task TestAddImagesToAlbum()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var albumEndpoint = new AlbumEndpoint(imgurClient);
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+			var createdAlbum = await albumEndpoint.CreateAlbumAsync();
+			await
+				albumEndpoint.AddImageToAlbumAsync(createdAlbum.Data.Id,
+					(await imageEndpoint.UploadImageFromBinaryAsync(imageBinary)).Data.Id);
+			var updatedAlbum = await albumEndpoint.GetAlbumDetailsAsync(createdAlbum.Data.Id);
+
+			// Assert the Reponse
+			Assert.IsNotNull(updatedAlbum.Data);
+			Assert.AreEqual(updatedAlbum.Success, true);
+			Assert.AreEqual(updatedAlbum.Status, HttpStatusCode.OK);
+
+			// Assert the data
+			Assert.AreEqual(createdAlbum.Data.ImagesCount + 1, updatedAlbum.Data.ImagesCount);
+		}
 	}
 }

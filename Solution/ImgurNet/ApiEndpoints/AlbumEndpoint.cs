@@ -16,6 +16,7 @@ namespace ImgurNet.ApiEndpoints
 
 		internal const string CreateAlbumUrl =		"album/";
 		internal const string AlbumUrl =			"album/{0}";
+		internal const string AlbumAddImagesUrl =	"album/{0}/add";
 		internal const string AlbumImagesUrl =		"album/{0}/images";
 		internal const string AlbumFavouriteUrl =	"album/{0}/favorite";
 		internal const string AlbumImageUrl =		"album/{0}/image/{1}";
@@ -126,7 +127,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <summary>
 		/// Adds/Removes an album from the authenticated user's favourites. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint.
 		/// </summary>
-		/// <param name="albumId">The AlbumId of the image you want to favourite.</param>
+		/// <param name="albumId">The AlbumId of the album you want to favourite.</param>
 		/// <returns>An bool declaring if the item is now favourited.</returns>
 		public async Task<ImgurResponse<Boolean>> FavouriteAlbumAsync(string albumId)
 		{
@@ -140,6 +141,48 @@ namespace ImgurNet.ApiEndpoints
 				await
 					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(AlbumFavouriteUrl, albumId),
 						Imgur.Authentication);
+
+			return new ImgurResponse<Boolean>
+			{
+				Data = (response.Data.ToLowerInvariant() == "favorited"),
+				Status = response.Status,
+				Success = response.Success
+			};
+		}
+
+		/// <summary>
+		/// Adds an image to an album. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint
+		/// </summary>
+		/// <param name="albumId">The AlbumId of the album you want to add images to</param>
+		/// <param name="imageId">An image id to add to the album</param>
+		public async Task<ImgurResponse<Boolean>> AddImageToAlbumAsync(string albumId, string imageId)
+		{
+			return await AddImagesToAlbumAsync(albumId, new [] {imageId});
+		}
+
+		/// <summary>
+		/// Adds images to an album. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint
+		/// </summary>
+		/// <param name="albumId">The AlbumId of the album you want to add images to</param>
+		/// <param name="imageIds">A collection of image ids to add to the album</param>
+		public async Task<ImgurResponse<Boolean>> AddImagesToAlbumAsync(string albumId, string[] imageIds)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var keyPairs = new List<KeyValuePair<string, string>>
+			{
+				new KeyValuePair<string, string>("ids", String.Join(",", imageIds))
+			};
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			var response =
+				await
+					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(AlbumAddImagesUrl, albumId),
+						Imgur.Authentication, content: multi);
 
 			return new ImgurResponse<Boolean>
 			{
