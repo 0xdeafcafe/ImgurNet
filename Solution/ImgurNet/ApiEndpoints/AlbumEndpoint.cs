@@ -61,22 +61,6 @@ namespace ImgurNet.ApiEndpoints
 					Request.SubmitImgurRequestAsync<Image[]>(Request.HttpMethod.Get, String.Format(AlbumImagesUrl, albumId), Imgur.Authentication);
 		}
 
-		/// <summary>
-		/// Get a specific image from a specific album.
-		/// </summary>
-		/// <param name="albumId">The id of the album you are requesting images from.</param>
-		/// <param name="imageId">The id of the image you want to get from the album.</param>
-		/// <returns>The album data</returns>
-		public async Task<ImgurResponse<Image>> GetImageFromAlbumAsync(string albumId, string imageId)
-		{
-			if (Imgur.Authentication == null)
-				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
-
-			return
-				await
-					Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(AlbumImageUrl, albumId, imageId), Imgur.Authentication);
-		}
-
 		#region Album Creation
 
 		/// <summary>

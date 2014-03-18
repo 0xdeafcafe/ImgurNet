@@ -54,25 +54,6 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestGetImageFromAlbum()
-		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
-			var albumEndpoint = new AlbumEndpoint(imgurClient);
-			var albumImage = await albumEndpoint.GetImageFromAlbumAsync("IPPAY", "66LxpQn");
-
-			// Assert the Reponse
-			Assert.IsNotNull(albumImage.Data);
-			Assert.AreEqual(albumImage.Success, true);
-			Assert.AreEqual(albumImage.Status, HttpStatusCode.OK);
-
-			// Asset the Data
-			Assert.AreEqual(albumImage.Data.Id, "66LxpQn");
-		}
-
-		[TestMethod]
 		public async Task TestCreateAlbum()
 		{
 			var settings = VariousFunctions.LoadTestSettings();
