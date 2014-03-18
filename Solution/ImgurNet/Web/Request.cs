@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
@@ -116,6 +117,9 @@ namespace ImgurNet.Web
 			{
 #endif
 				var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+				if (stringResponse.StartsWith("<"))
+					throw new WebException("Imgur's servers are current'y overloaded. Please wait.");
+
 				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 				if (imgurResponse.Success)
 					return imgurResponse;

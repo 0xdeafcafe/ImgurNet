@@ -114,6 +114,24 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(accountAlbumIds.Status, HttpStatusCode.OK);
 		}
 
+		[TestMethod]
+		public async Task TestGetAccountAlbumCount()
+		{
+			// This tests throws a "Imgur over capacity error right now.. No idea why
+
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var accountEndpoint = new AccountEndpoint(imgurClient);
+			var accountAlbumCount = await accountEndpoint.GetAccountAlbumCount();
+
+			// Assert the Response
+			Assert.IsNotNull(accountAlbumCount.Data);
+			Assert.AreEqual(accountAlbumCount.Success, true);
+			Assert.AreEqual(accountAlbumCount.Status, HttpStatusCode.OK);
+		}
+
 		#endregion
 
 		#region Image Specific Endpoint Tests
