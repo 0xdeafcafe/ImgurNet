@@ -17,7 +17,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var memeGenEndpoint = new MemeGenEndpoint(imgurClient);
-			var response = await memeGenEndpoint.GetDefaultMemes();
+			var response = await memeGenEndpoint.GetDefaultMemesAsync();
 
 			// Assert the Reponse
 			Assert.IsNotNull(response.Data);

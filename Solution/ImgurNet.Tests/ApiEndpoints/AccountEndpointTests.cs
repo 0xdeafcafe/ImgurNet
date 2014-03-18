@@ -72,7 +72,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountAlbums = await accountEndpoint.GetAccountAlbums(0);
+			var accountAlbums = await accountEndpoint.GetAccountAlbumsAsync(0);
 
 			// Assert the Response
 			Assert.IsNotNull(accountAlbums.Data);
@@ -88,9 +88,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountAlbums = await accountEndpoint.GetAccountAlbums(0);
+			var accountAlbums = await accountEndpoint.GetAccountAlbumsAsync(0);
 			if (accountAlbums.Data.Length == 0) return;
-			var accountAlbum = await accountEndpoint.GetAccountAlbumDetails(accountAlbums.Data[0].Id);
+			var accountAlbum = await accountEndpoint.GetAccountAlbumDetailsAsync(accountAlbums.Data[0].Id);
 
 			// Assert the Response
 			Assert.IsNotNull(accountAlbum.Data);
@@ -106,7 +106,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountAlbumIds = await accountEndpoint.GetAccountAlbumIds();
+			var accountAlbumIds = await accountEndpoint.GetAccountAlbumIdsAsync();
 
 			// Assert the Response
 			Assert.IsNotNull(accountAlbumIds.Data);
@@ -124,7 +124,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountAlbumCount = await accountEndpoint.GetAccountAlbumCount();
+			var accountAlbumCount = await accountEndpoint.GetAccountAlbumCountAsync();
 
 			// Assert the Response
 			Assert.IsNotNull(accountAlbumCount.Data);
@@ -142,7 +142,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbum = await albumEndpoint.CreateAlbumAsync(title: "swag");
-			var response = await accountEndpoint.DeleteAccountAlbum(accountAlbum.Data.DeleteHash);
+			var response = await accountEndpoint.DeleteAccountAlbumAsync(accountAlbum.Data.DeleteHash);
 
 			// Assert the Response
 			Assert.IsNotNull(response.Data);
@@ -163,7 +163,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountImages = await accountEndpoint.GetAccountImages(0);
+			var accountImages = await accountEndpoint.GetAccountImagesAsync(0);
 
 			// Assert the Response
 			Assert.IsNotNull(accountImages.Data);
@@ -179,9 +179,9 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountImageCount = await accountEndpoint.GetAccountImageIds();
+			var accountImageCount = await accountEndpoint.GetAccountImageIdsAsync();
 			if (accountImageCount.Data.Length == 0) return;
-			var accountImageDetails = await accountEndpoint.GetAccountImageDetails(accountImageCount.Data[0]);
+			var accountImageDetails = await accountEndpoint.GetAccountImageDetailsAsync(accountImageCount.Data[0]);
 
 			// Assert the Response
 			Assert.IsNotNull(accountImageDetails.Data);
@@ -197,7 +197,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountImageCount = await accountEndpoint.GetAccountImageIds();
+			var accountImageCount = await accountEndpoint.GetAccountImageIdsAsync();
 
 			// Assert the Response
 			Assert.IsNotNull(accountImageCount.Data);
@@ -213,7 +213,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
-			var accountImageCount = await accountEndpoint.GetAccountImageCount();
+			var accountImageCount = await accountEndpoint.GetAccountImageCountAsync();
 
 			// Assert the Response
 			Assert.IsNotNull(accountImageCount.Data);
@@ -237,7 +237,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var image = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
 
 			// Delete Image
-			var deletedImage = await accountEndpoint.DeleteAccountImage(image.Data.DeleteHash);
+			var deletedImage = await accountEndpoint.DeleteAccountImageAsync(image.Data.DeleteHash);
 
 			// Assert the Response
 			Assert.IsNotNull(deletedImage.Data);

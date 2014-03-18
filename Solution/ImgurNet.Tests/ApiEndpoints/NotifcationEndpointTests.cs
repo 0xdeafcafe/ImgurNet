@@ -58,7 +58,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 
 			var notifications = await notificationEndpoints.GetNotificationsAsync();
 			if (!notifications.Data.Replies.Any()) return;
-			var commentNotification = await notificationEndpoints.SetNotificationViewed(notifications.Data.Replies[0].Id);
+			var commentNotification = await notificationEndpoints.SetNotificationViewedAsync(notifications.Data.Replies[0].Id);
 
 			// Assert the Response
 			Assert.IsNotNull(commentNotification);

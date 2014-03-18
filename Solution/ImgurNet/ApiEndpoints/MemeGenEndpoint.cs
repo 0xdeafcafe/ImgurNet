@@ -25,7 +25,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <summary>
 		/// Get the list of default memes.
 		/// </summary>
-		public async Task<ImgurResponse<Image[]>> GetDefaultMemes()
+		public async Task<ImgurResponse<Image[]>> GetDefaultMemesAsync()
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");

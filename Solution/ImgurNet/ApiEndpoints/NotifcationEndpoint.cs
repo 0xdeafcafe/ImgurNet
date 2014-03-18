@@ -68,7 +68,7 @@ namespace ImgurNet.ApiEndpoints
 		/// </summary>
 		/// <param name="notificationId">The notification to mark as viewed</param>
 		/// <returns>A boolean indicating if the transaction was successful</returns>
-		public async Task<ImgurResponse<Boolean>> SetNotificationViewed(string notificationId)
+		public async Task<ImgurResponse<Boolean>> SetNotificationViewedAsync(string notificationId)
 		{
 			if (Imgur.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
