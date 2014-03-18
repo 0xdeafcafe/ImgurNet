@@ -122,5 +122,20 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		#endregion
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="albumDeletionHash"></param>
+		/// <returns></returns>
+		public async Task<ImgurResponse<Boolean>> DeleteAlbumAsync(string albumDeletionHash)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AlbumUrl, albumDeletionHash), Imgur.Authentication);
+		}
 	}
 }

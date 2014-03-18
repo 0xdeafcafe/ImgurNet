@@ -105,5 +105,25 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(createdAlbum.Data.ImagesCount, uploadedImages.Count);
 			Assert.AreEqual(createdAlbum.Data.Images[0].Id, uploadedImages[0].Id);
 		}
+
+		[TestMethod]
+		public async Task TestDeleteAlbum()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var albumEndpoint = new AlbumEndpoint(imgurClient);
+			var createdAlbum = await albumEndpoint.CreateAlbumAsync();
+			var deletedAlbum = await albumEndpoint.DeleteAlbumAsync(createdAlbum.Data.DeleteHash);
+
+			// Assert the Reponse
+			Assert.IsNotNull(deletedAlbum.Data);
+			Assert.AreEqual(deletedAlbum.Success, true);
+			Assert.AreEqual(deletedAlbum.Status, HttpStatusCode.OK);
+
+			// Assert the data
+			Assert.AreEqual(deletedAlbum.Data, true);
+		}
 	}
 }
