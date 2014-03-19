@@ -61,7 +61,7 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		/// <summary>
-		/// Get list of all conversations for the authenticated in user
+		/// Create a new conversation
 		/// </summary>
 		/// <param name="recipientUsername">The username of the recipient</param>
 		/// <param name="messageBody">The body of the message</param>
@@ -83,6 +83,23 @@ namespace ImgurNet.ApiEndpoints
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post,
 						string.Format(ConversationUrl, recipientUsername), ImgurClient.Authentication, content: multi);
+		}
+
+		/// <summary>
+		/// Delete a conversation
+		/// </summary>
+		/// <param name="id">The Id of the conversation</param>
+		public async Task<ImgurResponse<Boolean>> DeleteConversationAsync(int id)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, string.Format(ConversationUrl, id), ImgurClient.Authentication);
 		}
 	}
 }
