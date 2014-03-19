@@ -43,6 +43,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <summary>
 		/// Get list of all conversations for the authenticated in user
 		/// </summary>
+		/// <param name="id">The Id of the conversation</param>
 		public async Task<ImgurResponse<Conversation>> GetConversationAsync(int id)
 		{
 			if (ImgurClient.Authentication == null)
