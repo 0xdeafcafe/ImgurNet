@@ -36,5 +36,19 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(conversation.Success, true);
 			Assert.AreEqual(conversation.Status, HttpStatusCode.OK);
 		}
+
+		[TestMethod]
+		public async Task TestCreateConversation()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var conversationEndpoint = new ConversationEndpoint(imgurClient);
+			var conversation = await conversationEndpoint.CreateConversationAsync("xerax", "bitchin unit tests!");
+
+			// Assert the Reponse
+			Assert.IsNotNull(conversation.Data);
+			Assert.AreEqual(conversation.Success, true);
+			Assert.AreEqual(conversation.Status, HttpStatusCode.OK);
+			Assert.AreEqual(conversation.Data, true);
+		}
 	}
 }
