@@ -58,6 +58,7 @@
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\NotificationCenter.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Account.cs" />

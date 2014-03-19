@@ -19,46 +19,55 @@ namespace ImgurNet.Models
 		/// <summary>
 		/// 
 		/// </summary>
-		[JsonProperty("with_account")]
-		public string SenderAccount
+		public string From
 		{
-			get { return _senderAccount; }
-			set { SetField(ref _senderAccount, value); }
+			get { return _from; }
+			set { SetField(ref _from, value); }
 		}
-		private string _senderAccount;
+		private string _from;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		[JsonProperty("with_account_id")]
-		public int SenderAccountId
+		[JsonProperty("account_id")]
+		public int AccountId
 		{
-			get { return _senderAccountId; }
-			set { SetField(ref _senderAccountId, value); }
+			get { return _accountId; }
+			set { SetField(ref _accountId, value); }
 		}
-		private int _senderAccountId;
+		private int _accountId;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		[JsonProperty("last_message_preview")]
-		public string LastMessagePreview
+		[JsonProperty("sender_id")]
+		public int SenderId
 		{
-			get { return _lastMessagePreview; }
-			set { SetField(ref _lastMessagePreview, value); }
+			get { return _senderId; }
+			set { SetField(ref _senderId, value); }
 		}
-		private string _lastMessagePreview;
+		private int _senderId;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		[JsonProperty("message_count")]
-		public int MessageCount
+		public string Body
 		{
-			get { return _messageCount; }
-			set { SetField(ref _messageCount, value); }
+			get { return _body; }
+			set { SetField(ref _body, value); }
 		}
-		private int _messageCount;
+		private string _body;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[JsonProperty("conversation_id")]
+		public int ConversationId
+		{
+			get { return _conversationId; }
+			set { SetField(ref _conversationId, value); }
+		}
+		private int _conversationId;
 
 		/// <summary>
 		/// 

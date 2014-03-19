@@ -11,6 +11,7 @@ namespace ImgurNet.ApiEndpoints
 		#region Endpoints
 
 		internal const string ConversationsUrl =		"conversations";
+		internal const string ConversationUrl =			"conversations/{0}";
 
 		#endregion
 
@@ -26,7 +27,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <summary>
 		/// Get list of all conversations for the authenticated in user
 		/// </summary>
-		public async Task<ImgurResponse<Message[]>> GetConversationListAsync()
+		public async Task<ImgurResponse<Conversation[]>> GetConversationListAsync()
 		{
 			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
@@ -36,7 +37,23 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitImgurRequestAsync<Message[]>(Request.HttpMethod.Get, ConversationsUrl, ImgurClient.Authentication);
+					Request.SubmitImgurRequestAsync<Conversation[]>(Request.HttpMethod.Get, ConversationsUrl, ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Get list of all conversations for the authenticated in user
+		/// </summary>
+		public async Task<ImgurResponse<Conversation>> GetConversationAsync(int id)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Conversation>(Request.HttpMethod.Get, string.Format(ConversationUrl, id), ImgurClient.Authentication);
 		}
 	}
 }
