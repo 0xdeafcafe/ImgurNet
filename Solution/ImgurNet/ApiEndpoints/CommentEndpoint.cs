@@ -16,6 +16,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string CommentCreateUrl =		"comment/";
 		internal const string CommentDetailsUrl =		"comment/{0}";
 		internal const string CommentDeleteUrl =		"comment/{0}";
+		internal const string CommentRepliesUrl =		"comment/{0}/replies";
 
 		#endregion
 
@@ -85,6 +86,24 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(CommentDeleteUrl, commentId),
+						ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Get a comment with all of the replies for that comment
+		/// </summary>
+		/// <param name="commentId">The Id of the comment</param>
+		public async Task<ImgurResponse<Comment>> GetCommentRepliesAsync(Int64 commentId)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Get, String.Format(CommentRepliesUrl, commentId),
 						ImgurClient.Authentication);
 		}
 	}
