@@ -66,7 +66,7 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Post, String.Format(CommentCreateUrl),
+					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Post, CommentCreateUrl,
 						ImgurClient.Authentication, content: multi);
 		}
 

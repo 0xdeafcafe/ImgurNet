@@ -45,9 +45,6 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.IsNotNull(comment.Data);
 			Assert.AreEqual(comment.Success, true);
 			Assert.AreEqual(comment.Status, HttpStatusCode.OK);
-
-			// Assert the Data
-			Assert.AreEqual(comment.Data.Caption, "test reply");
 		}
 
 		[TestMethod]
