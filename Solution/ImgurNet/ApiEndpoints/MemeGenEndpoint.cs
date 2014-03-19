@@ -19,7 +19,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="imgur"></param>
 		public MemeGenEndpoint(Imgur imgur)
 		{
-			Imgur = imgur;
+			ImgurClient = imgur;
 		}
 
 		/// <summary>
@@ -27,10 +27,10 @@ namespace ImgurNet.ApiEndpoints
 		/// </summary>
 		public async Task<ImgurResponse<Image[]>> GetDefaultMemesAsync()
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitImgurRequestAsync<Image[]>(Request.HttpMethod.Get, DefaultMemesUrl, Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Image[]>(Request.HttpMethod.Get, DefaultMemesUrl, ImgurClient.Authentication);
 		}
 	}
 }

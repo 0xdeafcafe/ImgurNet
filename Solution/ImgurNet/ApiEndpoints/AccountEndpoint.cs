@@ -35,7 +35,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="imgur"></param>
 		public AccountEndpoint(Imgur imgur)
 		{
-			Imgur = imgur;
+			ImgurClient = imgur;
 		}
 
 		/// <summary>
@@ -45,10 +45,10 @@ namespace ImgurNet.ApiEndpoints
 		/// <returns>The account data</returns>
 		public async Task<ImgurResponse<Account>> GetAccountDetailsAsync(string username)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitImgurRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Account>(Request.HttpMethod.Get, String.Format(AccountUrl, username), ImgurClient.Authentication);
 		}
 
 		#region Album Specific Endpoints
@@ -60,16 +60,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get the album from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Album[]>> GetAccountAlbumsAsync(int page = 0, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Album[]>(Request.HttpMethod.Get, String.Format(AccountAlbumsUrl, username, page),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -79,16 +79,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get the album from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Album>> GetAccountAlbumDetailsAsync(string albumId, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Album>(Request.HttpMethod.Get, String.Format(AccountAlbumDetailsUrl, username, albumId),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -97,16 +97,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get album ids from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<String[]>> GetAccountAlbumIdsAsync(string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<String[]>(Request.HttpMethod.Get, String.Format(AccountAlbumIdsUrl, username),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -116,16 +116,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <remarks>This tests throws a "Imgur over capacity error right now.. No idea why</remarks>
 		public async Task<ImgurResponse<int>> GetAccountAlbumCountAsync(string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<int>(Request.HttpMethod.Get, String.Format(AccountAlbumCountUrl, username),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 		
 		/// <summary>
@@ -135,16 +135,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username of the account to delete from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Boolean>> DeleteAccountAlbumAsync(string deletionHash, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AccountDeleteAlbumUrl, username, deletionHash),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		#endregion
@@ -158,16 +158,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get the images from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Image[]>> GetAccountImagesAsync(int page = 0, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Image[]>(Request.HttpMethod.Get, String.Format(AccountImagesUrl, username, page),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -177,16 +177,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get the image from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Image>> GetAccountImageDetailsAsync(string imageId, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(AccountImageDetailsUrl, username, imageId),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -195,16 +195,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get image count from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<String[]>> GetAccountImageIdsAsync(string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<String[]>(Request.HttpMethod.Get, String.Format(AccountImageIdsUrl, username),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -213,16 +213,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username to get image count from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<int>> GetAccountImageCountAsync(string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<int>(Request.HttpMethod.Get, String.Format(AccountImageCountUrl, username),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -232,16 +232,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="username">The username of the account to delete from. Can be ignored if using OAuth2, and it will use that account.</param>
 		public async Task<ImgurResponse<Boolean>> DeleteAccountImageAsync(string deletionHash, string username = "me")
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (username == "me" && !(Imgur.Authentication is OAuth2Authentication))
+			if (username == "me" && !(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AccountDeleteImageUrl, username, deletionHash),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 		}
 
 		#endregion

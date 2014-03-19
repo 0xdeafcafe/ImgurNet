@@ -147,6 +147,17 @@ namespace ImgurNet.Models
 		private bool _deleted;
 
 		/// <summary>
+		/// The authenticated user's vote (up/down/null)
+		/// </summary>
+		[JsonProperty("vote")]
+		public string YourVote
+		{
+			get { return _yourVote; }
+			set { SetField(ref _yourVote, value); }
+		}
+		private string _yourVote;
+
+		/// <summary>
 		/// All of the replies for this comment. If there are no replies to the comment then this is an empty set.
 		/// </summary>
 		public Comment[] Children

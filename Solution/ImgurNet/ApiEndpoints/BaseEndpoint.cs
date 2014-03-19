@@ -2,6 +2,6 @@
 {
 	public class BaseEndpoint : IEndpoint
 	{
-		public Imgur Imgur { get; internal set; }
+		public Imgur ImgurClient { get; internal set; }
 	}
 }

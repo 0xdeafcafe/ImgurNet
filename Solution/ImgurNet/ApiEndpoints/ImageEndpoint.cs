@@ -28,7 +28,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="imgur"></param>
 		public ImageEndpoint(Imgur imgur)
 		{
-			Imgur = imgur;
+			ImgurClient = imgur;
 		}
 
 		/// <summary>
@@ -38,10 +38,10 @@ namespace ImgurNet.ApiEndpoints
 		/// <returns>The image data.</returns>
 		public async Task<ImgurResponse<Image>> GetImageDetailsAsync(string imageId)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Get, String.Format(ImageUrl, imageId), ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -51,10 +51,10 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="imageDeletionHash">The image deletion hash</param>
 		public async Task<ImgurResponse<Boolean>> DeleteImageAsync(string imageDeletionHash)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			return await Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), Imgur.Authentication);
+			return await Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(ImageUrl, imageDeletionHash), ImgurClient.Authentication);
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <returns>A boolean indicating if the transaction was successful.</returns>
 		public async Task<ImgurResponse<Boolean>> UpdateImageDetailsAsync(string imageId, string title = null, string description = null)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			var keyPairs = new List<KeyValuePair<string, string>>();
@@ -77,7 +77,7 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, String.Format(ImageUrl, imageId),
-						Imgur.Authentication, content: multi);
+						ImgurClient.Authentication, content: multi);
 		}
 
 		/// <summary>
@@ -87,16 +87,16 @@ namespace ImgurNet.ApiEndpoints
 		/// <returns>An bool declaring if the item is now favourited.</returns>
 		public async Task<ImgurResponse<Boolean>> FavouriteImageAsync(string imageId)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
-			if (!(Imgur.Authentication is OAuth2Authentication))
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
 			var response =
 				await
 					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(FavouriteImageUrl, imageId),
-						Imgur.Authentication);
+						ImgurClient.Authentication);
 
 			return new ImgurResponse<Boolean>
 			{
@@ -111,7 +111,7 @@ namespace ImgurNet.ApiEndpoints
 		public async Task<ImgurResponse<Image>> UploadImageFromBase64Async(string base64ImageData,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			var sb = new StringBuilder();
@@ -129,7 +129,7 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, ImgurClient.Authentication, content: multi);
 		}
 
 		#endregion
@@ -139,7 +139,7 @@ namespace ImgurNet.ApiEndpoints
 		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(string url,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
-			if (Imgur.Authentication == null)
+			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			var keyPairs = new List<KeyValuePair<string, string>>
@@ -153,7 +153,7 @@ namespace ImgurNet.ApiEndpoints
 			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, Imgur.Authentication, content: multi);
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, ImgurClient.Authentication, content: multi);
 		}
 
 		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(Uri uri,

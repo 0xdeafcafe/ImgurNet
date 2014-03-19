@@ -1,7 +1,7 @@
 ﻿namespace ImgurNet.ApiEndpoints
 {
-	internal interface IEndpoint
+	interface IEndpoint
 	{
-		Imgur Imgur { get; }
+		Imgur ImgurClient { get; }
 	}
 }
