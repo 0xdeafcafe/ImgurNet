@@ -153,5 +153,27 @@ namespace ImgurNet.Tests.ApiEndpoints
 			// Assert the data
 			Assert.AreEqual(createdAlbum.Data.ImagesCount + 1, updatedAlbum.Data.ImagesCount);
 		}
+
+		[TestMethod]
+		public async Task TestRemoveImagesFromAlbum()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var albumEndpoint = new AlbumEndpoint(imgurClient);
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+			var createdAlbum = await albumEndpoint.CreateAlbumAsync(new[] {(await imageEndpoint.UploadImageFromBinaryAsync(imageBinary)).Data});
+			await albumEndpoint.RemoveImageFromAlbumAsync(createdAlbum.Data.Id, createdAlbum.Data.Images[0].Id);
+			var updatedAlbum = await albumEndpoint.GetAlbumDetailsAsync(createdAlbum.Data.Id);
+
+			// Assert the Reponse
+			Assert.IsNotNull(updatedAlbum.Data);
+			Assert.AreEqual(updatedAlbum.Success, true);
+			Assert.AreEqual(updatedAlbum.Status, HttpStatusCode.OK);
+		}
 	}
 }

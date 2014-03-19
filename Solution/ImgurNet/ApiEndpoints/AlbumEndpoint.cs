@@ -20,6 +20,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string AlbumImagesUrl =		"album/{0}/images";
 		internal const string AlbumFavouriteUrl =	"album/{0}/favorite";
 		internal const string AlbumImageUrl =		"album/{0}/image/{1}";
+		internal const string AlbumRemoveImagesUrl ="album/{0}/remove_images";
 
 		#endregion
 
@@ -150,10 +151,12 @@ namespace ImgurNet.ApiEndpoints
 			};
 		}
 
+		#region Add Images to Album
+
 		/// <summary>
 		/// Adds an image to an album. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint
 		/// </summary>
-		/// <param name="albumId">The AlbumId of the album you want to add images to</param>
+		/// <param name="albumId">The AlbumId of the album you want to add an image to</param>
 		/// <param name="imageId">An image id to add to the album</param>
 		public async Task<ImgurResponse<Boolean>> AddImageToAlbumAsync(string albumId, string imageId)
 		{
@@ -179,17 +182,51 @@ namespace ImgurNet.ApiEndpoints
 			};
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
 
-			var response =
+			return
 				await
-					Request.SubmitImgurRequestAsync<String>(Request.HttpMethod.Post, String.Format(AlbumAddImagesUrl, albumId),
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, String.Format(AlbumAddImagesUrl, albumId),
 						Imgur.Authentication, content: multi);
-
-			return new ImgurResponse<Boolean>
-			{
-				Data = (response.Data.ToLowerInvariant() == "favorited"),
-				Status = response.Status,
-				Success = response.Success
-			};
 		}
+
+		#endregion
+
+		#region Remove Images from Album
+
+		/// <summary>
+		/// Removes an image from an album. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint
+		/// </summary>
+		/// <param name="albumId">The AlbumId of the album you want to remove an image from</param>
+		/// <param name="imageId">An image id to remove from the album</param>
+		public async Task<ImgurResponse<Boolean>> RemoveImageFromAlbumAsync(string albumId, string imageId)
+		{
+			return await RemoveImagesFromAlbumAsync(albumId, new[] {imageId});
+		}
+
+		/// <summary>
+		/// Removes images from an album. Must be authenticated using <see cref="OAuth2Authentication"/> to call this Endpoint
+		/// </summary>
+		/// <param name="albumId">The AlbumId of the album you want to remove images from</param>
+		/// <param name="imageIds">A collection of image ids to remove from the album</param>
+		public async Task<ImgurResponse<Boolean>> RemoveImagesFromAlbumAsync(string albumId, string[] imageIds)
+		{
+			if (Imgur.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(Imgur.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var keyPairs = new List<KeyValuePair<string, string>>
+			{
+				new KeyValuePair<string, string>("ids", String.Join(",", imageIds))
+			};
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(AlbumRemoveImagesUrl, albumId),
+						Imgur.Authentication, content: multi);
+		}
+
+		#endregion
 	}
 }
