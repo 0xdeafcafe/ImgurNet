@@ -78,14 +78,14 @@ namespace ImgurNet.Tests.ApiEndpoints
 			try
 			{
 				await conversationEndpoint.ReportConversationSenderAsync(String.Format("test-username-{0}", new Random().Next(0, 1000)));
+
+				Assert.Fail();
 			}
 			catch (ImgurResponseFailedException exception)
 			{
 				// Assert the Reponse
 				Assert.AreEqual(exception.Message, "Invalid username");
 			}
-
-			Assert.Fail();
 		}
 	}
 }
