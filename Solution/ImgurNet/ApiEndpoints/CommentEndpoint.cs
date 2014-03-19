@@ -17,6 +17,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string CommentDetailsUrl =		"comment/{0}";
 		internal const string CommentDeleteUrl =		"comment/{0}";
 		internal const string CommentRepliesUrl =		"comment/{0}/replies";
+		internal const string CommentVoteUrl =			"comment/{0}/vote/{1}";
 
 		#endregion
 
@@ -104,6 +105,25 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Get, String.Format(CommentRepliesUrl, commentId),
+						ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Vote on a comment
+		/// </summary>
+		/// <param name="commentId">The Id of the comment</param>
+		/// <param name="vote">The vote to give the comment</param>
+		public async Task<ImgurResponse<Boolean>> VoteCommentAsync(Int64 commentId, Enums.Vote vote)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Get, String.Format(CommentVoteUrl, commentId, vote.ToString().ToLowerInvariant()),
 						ImgurClient.Authentication);
 		}
 	}

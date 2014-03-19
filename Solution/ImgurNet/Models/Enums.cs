@@ -33,5 +33,11 @@
 			Horizontal,
 			Vertical
 		}
+
+		public enum Vote
+		{
+			Up,
+			Down
+		}
 	}
 }
