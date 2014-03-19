@@ -18,7 +18,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var commentEndpoint = new CommentEndpoint(imgurClient);
-			var comment = await commentEndpoint.GetComment(192351802);
+			var comment = await commentEndpoint.GetCommentAsync(192351802);
 
 			// Assert the Reponse
 			Assert.IsNotNull(comment.Data);
@@ -39,7 +39,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			await OAuthHelpers.GetAccessToken(authentication, settings);
 			var imgurClient = new Imgur(authentication);
 			var commentEndpoint = new CommentEndpoint(imgurClient);
-			var comment = await commentEndpoint.CreateComment("test reply", "161n8BB", 193421419);
+			var comment = await commentEndpoint.CreateCommentAsync("test reply", "161n8BB", 193421419);
 
 			// Assert the Reponse
 			Assert.IsNotNull(comment.Data);

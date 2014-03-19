@@ -27,7 +27,7 @@ namespace ImgurNet.ApiEndpoints
 		/// Get information about a specific comment
 		/// </summary>
 		/// <param name="commentId">The Id of the comment</param>
-		public async Task<ImgurResponse<Comment>> GetComment(Int64 commentId)
+		public async Task<ImgurResponse<Comment>> GetCommentAsync(Int64 commentId)
 		{
 			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
@@ -47,7 +47,7 @@ namespace ImgurNet.ApiEndpoints
 		/// <param name="caption">The body of the comment</param>
 		/// <param name="imageId">The image to post the comment on</param>
 		/// <param name="parentId">[optional] The id of the comment this is a reply to, (if this is a reply)</param>
-		public async Task<ImgurResponse<Comment>> CreateComment(string caption, string imageId, int? parentId = null)
+		public async Task<ImgurResponse<Comment>> CreateCommentAsync(string caption, string imageId, int? parentId = null)
 		{
 			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
