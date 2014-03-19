@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
@@ -11,7 +13,8 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region Endpoints
 
-		internal const string CommentUrl =			"comment/{0}";
+		internal const string CommentCreateUrl =		"comment/";
+		internal const string CommentDetailsUrl =		"comment/{0}";
 
 		#endregion
 
@@ -34,8 +37,36 @@ namespace ImgurNet.ApiEndpoints
 
 			return
 				await
-					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Get, String.Format(CommentUrl, commentId),
+					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Get, String.Format(CommentDetailsUrl, commentId),
 						ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="comment"></param>
+		/// <param name="imageId"></param>
+		/// <param name="parentId">[optional] The id of the comment this is a reply to, (if this is a reply)</param>
+		public async Task<ImgurResponse<Comment>> CreateComment(string comment, string imageId, int? parentId = null)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var keyPairs = new List<KeyValuePair<string, string>>
+			{
+				new KeyValuePair<string, string>("image_id", imageId),
+				new KeyValuePair<string, string>("comment", comment)
+			};
+			if (parentId != null) keyPairs.Add(new KeyValuePair<string, string>("parent_id", parentId.ToString()));
+			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Comment>(Request.HttpMethod.Post, String.Format(CommentCreateUrl),
+						ImgurClient.Authentication, content: multi);
 		}
 	}
 }
