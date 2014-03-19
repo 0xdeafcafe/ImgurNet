@@ -71,13 +71,31 @@ namespace ImgurNet.Tests.ApiEndpoints
 		}
 
 		[TestMethod]
-		public async Task TestReportConversation()
+		public async Task TestReportuserFromConversation()
 		{
 			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var conversationEndpoint = new ConversationEndpoint(imgurClient);
 			try
 			{
 				await conversationEndpoint.ReportConversationSenderAsync(String.Format("test-username-{0}", new Random().Next(0, 1000)));
+
+				Assert.Fail();
+			}
+			catch (ImgurResponseFailedException exception)
+			{
+				// Assert the Reponse
+				Assert.AreEqual(exception.Message, "Invalid username");
+			}
+		}
+
+		[TestMethod]
+		public async Task TestBlockUserFromConversation()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var conversationEndpoint = new ConversationEndpoint(imgurClient);
+			try
+			{
+				await conversationEndpoint.BlockConversationSenderAsync(String.Format("test-username-{0}", new Random().Next(0, 1000)));
 
 				Assert.Fail();
 			}

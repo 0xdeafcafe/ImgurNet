@@ -16,6 +16,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string ConversationsUrl =		"conversations";
 		internal const string ConversationUrl =			"conversations/{0}";
 		internal const string ConversationReportUrl =	"conversations/report/{0}";
+		internal const string ConversationBlockUrl =	"conversations/block/{0}";
 
 		#endregion
 
@@ -118,6 +119,23 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, string.Format(ConversationReportUrl, username), ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Block the user from sending messages to the user that is logged in.
+		/// </summary>
+		/// <param name="username">The username of the person to block</param>
+		public async Task<ImgurResponse<Boolean>> BlockConversationSenderAsync(string username)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, string.Format(ConversationBlockUrl, username), ImgurClient.Authentication);
 		}
 	}
 }
