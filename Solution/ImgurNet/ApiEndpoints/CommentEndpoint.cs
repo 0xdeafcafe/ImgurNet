@@ -42,12 +42,12 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		/// <summary>
-		/// 
+		/// Creates a new comment
 		/// </summary>
-		/// <param name="comment"></param>
-		/// <param name="imageId"></param>
+		/// <param name="caption">The body of the comment</param>
+		/// <param name="imageId">The image to post the comment on</param>
 		/// <param name="parentId">[optional] The id of the comment this is a reply to, (if this is a reply)</param>
-		public async Task<ImgurResponse<Comment>> CreateComment(string comment, string imageId, int? parentId = null)
+		public async Task<ImgurResponse<Comment>> CreateComment(string caption, string imageId, int? parentId = null)
 		{
 			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
@@ -58,7 +58,7 @@ namespace ImgurNet.ApiEndpoints
 			var keyPairs = new List<KeyValuePair<string, string>>
 			{
 				new KeyValuePair<string, string>("image_id", imageId),
-				new KeyValuePair<string, string>("comment", comment)
+				new KeyValuePair<string, string>("comment", caption)
 			};
 			if (parentId != null) keyPairs.Add(new KeyValuePair<string, string>("parent_id", parentId.ToString()));
 			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
