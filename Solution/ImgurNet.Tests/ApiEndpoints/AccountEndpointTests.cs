@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
-using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
 using ImgurNet.Models;
 using ImgurNet.Tests.Helpers;
@@ -18,9 +17,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccount()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var response = await accountEndpoint.GetAccountDetailsAsync("xerax");
 
@@ -37,9 +34,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetBadAccount()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			ImgurResponse<Account> imgurResponse = null;
 			try
@@ -67,10 +62,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountAlbums()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbums = await accountEndpoint.GetAccountAlbumsAsync(0);
 
@@ -83,10 +75,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountAlbum()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbums = await accountEndpoint.GetAccountAlbumsAsync(0);
 			if (accountAlbums.Data.Length == 0) return;
@@ -101,10 +90,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountAlbumIds()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbumIds = await accountEndpoint.GetAccountAlbumIdsAsync();
 
@@ -117,12 +103,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountAlbumCount()
 		{
-			// This tests throws a "Imgur over capacity error right now.. No idea why
-
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbumCount = await accountEndpoint.GetAccountAlbumCountAsync();
 
@@ -135,10 +116,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteAccountAlbum()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var albumEndpoint = new AlbumEndpoint(imgurClient);
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountAlbum = await albumEndpoint.CreateAlbumAsync(title: "swag");
@@ -158,10 +136,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountImages()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImages = await accountEndpoint.GetAccountImagesAsync(0);
 
@@ -174,10 +149,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountImageDetails()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImageCount = await accountEndpoint.GetAccountImageIdsAsync();
 			if (accountImageCount.Data.Length == 0) return;
@@ -192,10 +164,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountImageIds()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImageCount = await accountEndpoint.GetAccountImageIdsAsync();
 
@@ -208,10 +177,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountImageCount()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var accountImageCount = await accountEndpoint.GetAccountImageCountAsync();
 
@@ -224,10 +190,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteAccountImage()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var accountEndpoint = new AccountEndpoint(imgurClient);
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 

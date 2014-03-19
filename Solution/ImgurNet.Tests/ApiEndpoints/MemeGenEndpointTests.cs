@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
-using ImgurNet.Authentication;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,9 +12,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetImageDetails()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var memeGenEndpoint = new MemeGenEndpoint(imgurClient);
 			var response = await memeGenEndpoint.GetDefaultMemesAsync();
 

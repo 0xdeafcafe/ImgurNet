@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
-using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,9 +15,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetImageDetails()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 			var response = await imageEndpoint.GetImageDetailsAsync("F1sUnHq");
 
@@ -40,12 +37,10 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteImage()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
 			var response = await imageEndpoint.DeleteImageAsync(uploadedImage.Data.DeleteHash);
@@ -63,10 +58,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
@@ -89,10 +81,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
@@ -110,12 +99,10 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestUploadImageFromBinary()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
 			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try
@@ -136,10 +123,8 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestUploadImageFromUrl()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
 			const string imageUrl = "http://www.ella-lapetiteanglaise.com/wp-content/uploads/2013/11/keep-calm-because-yolo-24.png";
-			var imgurClient = new Imgur(new ClientAuthentication(settings.ClientId, false));
 			var imageEndpoint = new ImageEndpoint(imgurClient);
 
 			try

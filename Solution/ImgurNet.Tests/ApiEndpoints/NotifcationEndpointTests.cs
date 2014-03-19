@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
-using ImgurNet.Authentication;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,10 +13,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountNotifications()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var notificationEndpoints = new NotifcationEndpoint(imgurClient);
 
 			var notifications = await notificationEndpoints.GetNotificationsAsync(false);
@@ -31,10 +27,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetAccountNotification()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var notificationEndpoints = new NotifcationEndpoint(imgurClient);
 
 			var notifications = await notificationEndpoints.GetNotificationsAsync();
@@ -50,10 +43,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestSetAccountNotificationViewed()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var notificationEndpoints = new NotifcationEndpoint(imgurClient);
 
 			var notifications = await notificationEndpoints.GetNotificationsAsync();

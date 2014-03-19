@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
-using ImgurNet.Authentication;
 using ImgurNet.Models;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,10 +13,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetComment()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.GetCommentAsync(192351802);
 
@@ -35,10 +31,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestCreateComment()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.CreateCommentAsync("test reply", "161n8BB", 193421419);
 
@@ -51,10 +44,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteComment()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.CreateCommentAsync("test reply", "161n8BB", 193421419);
 			var deleteComment = await commentEndpoint.DeleteCommentAsync(comment.Data.Id);
@@ -71,10 +61,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestGetCommentReplies()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.GetCommentRepliesAsync(193421419);
 
@@ -87,10 +74,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestVoteComment()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.GetCommentAsync(193421419);
 			var votedComment = await commentEndpoint.VoteCommentAsync(comment.Data.Id, Enums.Vote.Up);
@@ -104,10 +88,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestReportComment()
 		{
-			var settings = VariousFunctions.LoadTestSettings();
-			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			await OAuthHelpers.GetAccessToken(authentication, settings);
-			var imgurClient = new Imgur(authentication);
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.ReportCommentAsync(193420645);
 
