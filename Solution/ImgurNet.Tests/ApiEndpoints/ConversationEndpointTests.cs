@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
+using ImgurNet.Exceptions;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -66,6 +68,24 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(deletedConversation.Success, true);
 			Assert.AreEqual(deletedConversation.Status, HttpStatusCode.OK);
 			Assert.AreEqual(deletedConversation.Data, true);
+		}
+
+		[TestMethod]
+		public async Task TestReportConversation()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var conversationEndpoint = new ConversationEndpoint(imgurClient);
+			try
+			{
+				await conversationEndpoint.ReportConversationSenderAsync(String.Format("test-username-{0}", new Random().Next(0, 1000)));
+			}
+			catch (ImgurResponseFailedException exception)
+			{
+				// Assert the Reponse
+				Assert.AreEqual(exception.Message, "Invalid username");
+			}
+
+			Assert.Fail();
 		}
 	}
 }

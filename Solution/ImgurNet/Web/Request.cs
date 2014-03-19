@@ -120,9 +120,9 @@ namespace ImgurNet.Web
 				if (stringResponse.StartsWith("<"))
 					throw new WebException("Imgur's servers are current'y overloaded. Please wait.");
 
-				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
+				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<object>>(stringResponse);
 				if (imgurResponse.Success)
-					return imgurResponse;
+					return JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 
 				var errorImgurReponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
 				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);

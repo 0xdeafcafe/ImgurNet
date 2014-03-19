@@ -15,6 +15,7 @@ namespace ImgurNet.ApiEndpoints
 
 		internal const string ConversationsUrl =		"conversations";
 		internal const string ConversationUrl =			"conversations/{0}";
+		internal const string ConversationReportUrl =	"conversations/report/{0}";
 
 		#endregion
 
@@ -100,6 +101,23 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, string.Format(ConversationUrl, id), ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Report a user for sending messages that are against the Terms of Service.
+		/// </summary>
+		/// <param name="username">The username of the sender</param>
+		public async Task<ImgurResponse<Boolean>> ReportConversationSenderAsync(string username)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, string.Format(ConversationReportUrl, username), ImgurClient.Authentication);
 		}
 	}
 }
