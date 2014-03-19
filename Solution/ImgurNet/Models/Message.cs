@@ -17,79 +17,59 @@ namespace ImgurNet.Models
 		private int _id;
 
 		/// <summary>
-		/// The Id of the account sending the message
-		/// </summary>
-		[JsonProperty("account_id")]
-		public int AccountId
-		{
-			get { return _accountId; }
-			set { SetField(ref _accountId, value); }
-		}
-		private int _accountId;
-
-		/// <summary>
-		/// ?
+		/// 
 		/// </summary>
 		[JsonProperty("with_account")]
-		public int WithAccount
+		public string SenderAccount
 		{
-			get { return _withAccount; }
-			set { SetField(ref _withAccount, value); }
+			get { return _senderAccount; }
+			set { SetField(ref _senderAccount, value); }
 		}
-		private int _withAccount;
+		private string _senderAccount;
 
 		/// <summary>
-		/// ?
+		/// 
 		/// </summary>
-		public int Spam
+		[JsonProperty("with_account_id")]
+		public int SenderAccountId
 		{
-			get { return _spam; }
-			set { SetField(ref _spam, value); }
+			get { return _senderAccountId; }
+			set { SetField(ref _senderAccountId, value); }
 		}
-		private int _spam;
+		private int _senderAccountId;
 
 		/// <summary>
-		/// ?
+		/// 
 		/// </summary>
-		[JsonProperty("message_num")]
-		public int MessageNumber
+		[JsonProperty("last_message_preview")]
+		public string LastMessagePreview
 		{
-			get { return _messageNumber; }
-			set { SetField(ref _messageNumber, value); }
+			get { return _lastMessagePreview; }
+			set { SetField(ref _lastMessagePreview, value); }
 		}
-		private int _messageNumber;
-		
-		/// <summary>
-		/// The body of the message
-		/// </summary>
-		[JsonProperty("last_message")]
-		public string LastMessage
-		{
-			get { return _lastMessage; }
-			set { SetField(ref _lastMessage, value); }
-		}
-		private string _lastMessage;
+		private string _lastMessagePreview;
 
 		/// <summary>
-		/// The username of the person that sent the message
+		/// 
 		/// </summary>
-		public string From
+		[JsonProperty("message_count")]
+		public int MessageCount
 		{
-			get { return _from; }
-			set { SetField(ref _from, value); }
+			get { return _messageCount; }
+			set { SetField(ref _messageCount, value); }
 		}
-		private string _from;
+		private int _messageCount;
 
 		/// <summary>
-		/// When the message was sent
+		/// 
 		/// </summary>
 		[JsonConverter(typeof(UnixDateTimeConverter))]
 		[JsonProperty("datetime")]
-		public DateTime Created
+		public DateTime DateTime
 		{
-			get { return _created; }
-			set { SetField(ref _created, value); }
+			get { return _dateTime; }
+			set { SetField(ref _dateTime, value); }
 		}
-		private DateTime _created;
+		private DateTime _dateTime;
 	}
 }

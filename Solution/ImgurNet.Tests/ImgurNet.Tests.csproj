@@ -57,6 +57,7 @@
     <Compile Include="ApiEndpoints\AccountEndpointTests.cs" />
     <Compile Include="ApiEndpoints\AlbumEndpointTests.cs" />
     <Compile Include="ApiEndpoints\CommentEndpointTests.cs" />
+    <Compile Include="ApiEndpoints\ConversationEndpointTests.cs" />
     <Compile Include="ApiEndpoints\ImageEndpointTests.cs" />
     <Compile Include="ApiEndpoints\MemeGenEndpointTests.cs" />
     <Compile Include="ApiEndpoints\NotifcationEndpointTests.cs" />

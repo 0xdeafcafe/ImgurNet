@@ -10,14 +10,14 @@ ImgurNet
 ### Progress
 ***
 
-This is the current status of how much of the Imgur Api set has been completed (Overall: __33/78__):
+This is the current status of how much of the Imgur Api set has been completed (Overall: __34/78__):
 
 * Account:      __(10/29)__
 * Album:        __(Done)__
 * Comment:      __(Done)__
 * Gallery:      __(0/20)__
 * Image:        __(Done)__
-* Conversation: __(0/6)__
+* Conversation: __(1/6)__
 * Notification: __(Done)__
 * Memegen:      __(Done)__
 

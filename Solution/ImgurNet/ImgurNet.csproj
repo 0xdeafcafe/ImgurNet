@@ -37,6 +37,7 @@
     <Compile Include="ApiEndpoints\AlbumEndpoint.cs" />
     <Compile Include="ApiEndpoints\BaseEndpoint.cs" />
     <Compile Include="ApiEndpoints\CommentEndpoint.cs" />
+    <Compile Include="ApiEndpoints\ConversationEndpoint.cs" />
     <Compile Include="ApiEndpoints\IEndpoint.cs" />
     <Compile Include="ApiEndpoints\ImageEndpoint.cs" />
     <Compile Include="ApiEndpoints\MemeGenEndpoint.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImgurResponse.cs" />
+    <Compile Include="Models\NotificationMessage.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Models\OAuthTokens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

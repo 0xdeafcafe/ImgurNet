@@ -15,11 +15,11 @@
 		/// <summary>
 		/// The accounts notifications for messages
 		/// </summary>
-		public Notification<Message>[] Messages
+		public Notification<NotificationMessage>[] Messages
 		{
 			get { return _messages; }
 			set { SetField(ref _messages, value); }
 		}
-		private Notification<Message>[] _messages;
+		private Notification<NotificationMessage>[] _messages;
 	}
 }
