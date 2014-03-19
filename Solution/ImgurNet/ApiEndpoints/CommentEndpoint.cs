@@ -16,6 +16,7 @@ namespace ImgurNet.ApiEndpoints
 		internal const string CommentCreateUrl =		"comment/";
 		internal const string CommentDetailsUrl =		"comment/{0}";
 		internal const string CommentDeleteUrl =		"comment/{0}";
+		internal const string CommentReportUrl =		"comment/{0}/report";
 		internal const string CommentRepliesUrl =		"comment/{0}/replies";
 		internal const string CommentVoteUrl =			"comment/{0}/vote/{1}";
 
@@ -124,6 +125,24 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Get, String.Format(CommentVoteUrl, commentId, vote.ToString().ToLowerInvariant()),
+						ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Report a comment (made by a loser/douchebag) for being inappropriate
+		/// </summary>
+		/// <param name="commentId">The Id of the comment</param>
+		public async Task<ImgurResponse<object>> ReportCommentAsync(Int64 commentId)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<object>(Request.HttpMethod.Post, String.Format(CommentReportUrl, commentId),
 						ImgurClient.Authentication);
 		}
 	}

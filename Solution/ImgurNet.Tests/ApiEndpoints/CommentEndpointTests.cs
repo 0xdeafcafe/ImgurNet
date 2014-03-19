@@ -100,5 +100,20 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(votedComment.Success, true);
 			Assert.AreEqual(votedComment.Status, HttpStatusCode.OK);
 		}
+
+		[TestMethod]
+		public async Task TestReportComment()
+		{
+			var settings = VariousFunctions.LoadTestSettings();
+			var authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
+			await OAuthHelpers.GetAccessToken(authentication, settings);
+			var imgurClient = new Imgur(authentication);
+			var commentEndpoint = new CommentEndpoint(imgurClient);
+			var comment = await commentEndpoint.ReportCommentAsync(193420645);
+
+			// Assert the Reponse
+			Assert.AreEqual(comment.Success, true);
+			Assert.AreEqual(comment.Status, HttpStatusCode.OK);
+		}
 	}
 }
