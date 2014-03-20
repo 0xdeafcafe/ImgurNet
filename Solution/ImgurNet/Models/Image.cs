@@ -153,7 +153,7 @@ namespace ImgurNet.Models
 		/// </summary>
 		/// <param name="imageThumbnailSize">The tnumbnail size you want. Size guide here: (https://api.imgur.com/models/image#thumbs)</param>
 		/// <returns>A link to the image, with the specified thumbnail indictorator embedded.</returns>
-		public string GetThumbnailLink(Enums.ImageThumbnailSize imageThumbnailSize)
+		public string GetThumbnailLink(ImageThumbnailSize imageThumbnailSize)
 		{
 			var lastDecimalIndex = Link.LastIndexOf('.');
 			if (lastDecimalIndex < 0)
@@ -163,22 +163,22 @@ namespace ImgurNet.Models
 			switch (imageThumbnailSize)
 			{
 				default:
-				case Enums.ImageThumbnailSize.SmallSquare:
+				case ImageThumbnailSize.SmallSquare:
 					thumbnailSize = 's';
 					break;
-				case Enums.ImageThumbnailSize.BigSquare:
+				case ImageThumbnailSize.BigSquare:
 					thumbnailSize = 'b';
 					break;
-				case Enums.ImageThumbnailSize.SmallThumbnail:
+				case ImageThumbnailSize.SmallThumbnail:
 					thumbnailSize = 't';
 					break;
-				case Enums.ImageThumbnailSize.MediumThumbnail:
+				case ImageThumbnailSize.MediumThumbnail:
 					thumbnailSize = 'm';
 					break;
-				case Enums.ImageThumbnailSize.LargeThumbnail:
+				case ImageThumbnailSize.LargeThumbnail:
 					thumbnailSize = 'l';
 					break;
-				case Enums.ImageThumbnailSize.HugeThumbnail:
+				case ImageThumbnailSize.HugeThumbnail:
 					thumbnailSize = 'h';
 					break;
 			}

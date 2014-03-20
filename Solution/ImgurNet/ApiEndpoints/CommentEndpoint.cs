@@ -114,7 +114,7 @@ namespace ImgurNet.ApiEndpoints
 		/// </summary>
 		/// <param name="commentId">The Id of the comment</param>
 		/// <param name="vote">The vote to give the comment</param>
-		public async Task<ImgurResponse<Boolean>> VoteCommentAsync(Int64 commentId, Enums.Vote vote)
+		public async Task<ImgurResponse<Boolean>> VoteCommentAsync(Int64 commentId, Vote vote)
 		{
 			if (ImgurClient.Authentication == null)
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");

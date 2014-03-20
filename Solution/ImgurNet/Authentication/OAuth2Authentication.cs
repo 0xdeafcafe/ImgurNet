@@ -70,7 +70,7 @@ namespace ImgurNet.Authentication
 		/// <summary>
 		/// The type of OAuth authentication used to aquire the tokens
 		/// </summary>
-		public Enums.OAuth2Type OAuthType { get; private set; }
+		public OAuth2Type OAuthType { get; private set; }
 
 		#endregion
 
@@ -104,7 +104,7 @@ namespace ImgurNet.Authentication
 		///    - Token: Javascript Applications
 		/// </param>
 		/// <param name="state">The state you want to pass through auth. This will be given back to you from the re-direct url if you use Code or Token Authentication.</param>
-		public string CreateAuthorizationUrl(Enums.OAuth2Type responseType, string state = null)
+		public string CreateAuthorizationUrl(OAuth2Type responseType, string state = null)
 		{
 			var queryStrings = new Dictionary<string, string> { { "client_id", ClientId } };
 			if (state != null) queryStrings.Add("state", state);
@@ -112,13 +112,13 @@ namespace ImgurNet.Authentication
 			OAuthType = responseType;
 			switch (responseType)
 			{
-				case Enums.OAuth2Type.Code:
+				case OAuth2Type.Code:
 					queryStrings.Add("response_type", "code");
 					break;
-				case Enums.OAuth2Type.Token:
+				case OAuth2Type.Token:
 					queryStrings.Add("response_type", "token");
 					break;
-				case Enums.OAuth2Type.Pin:
+				case OAuth2Type.Pin:
 					queryStrings.Add("response_type", "pin");
 					break;
 				default:
@@ -222,15 +222,15 @@ namespace ImgurNet.Authentication
 		/// Generates a grant_type from the OAuth2 Type used in this authentication
 		/// </summary>
 		/// <param name="oAuth2Type"></param>
-		private static string GrantTypeFromOAuthType(Enums.OAuth2Type oAuth2Type)
+		private static string GrantTypeFromOAuthType(OAuth2Type oAuth2Type)
 		{
 			switch (oAuth2Type)
 			{
-				case Enums.OAuth2Type.Code:
+				case OAuth2Type.Code:
 					return "authorization_code";
-				case Enums.OAuth2Type.Pin:
+				case OAuth2Type.Pin:
 					return "pin";
-				case Enums.OAuth2Type.Token:
+				case OAuth2Type.Token:
 					return "token";
 
 				default:

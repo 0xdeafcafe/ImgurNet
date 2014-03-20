@@ -17,7 +17,7 @@ namespace ImgurNet.Tests.Authentication
 
 			// Create a new OAuth2 Authentication
 			var oAuth2Authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(Enums.OAuth2Type.Pin, "dicks");
+			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(OAuth2Type.Pin, "dicks");
 			var pin = "1234";
 			try
 			{
@@ -36,7 +36,7 @@ namespace ImgurNet.Tests.Authentication
 
 			// Create a new OAuth2 Authentication
 			var oAuth2Authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
-			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(Enums.OAuth2Type.Code, "dicks");
+			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(OAuth2Type.Code, "dicks");
 			var code = "1234";
 			try
 			{
