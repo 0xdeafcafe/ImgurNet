@@ -38,6 +38,7 @@
     <Compile Include="ApiEndpoints\BaseEndpoint.cs" />
     <Compile Include="ApiEndpoints\CommentEndpoint.cs" />
     <Compile Include="ApiEndpoints\ConversationEndpoint.cs" />
+    <Compile Include="ApiEndpoints\GalleryEndpoint.cs" />
     <Compile Include="ApiEndpoints\IEndpoint.cs" />
     <Compile Include="ApiEndpoints\ImageEndpoint.cs" />
     <Compile Include="ApiEndpoints\MemeGenEndpoint.cs" />
@@ -57,6 +58,9 @@
     <Compile Include="Helpers\AsyncHelper.cs" />
     <Compile Include="Imgur.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\GalleryAlbum.cs" />
+    <Compile Include="Models\GalleryImage.cs" />
+    <Compile Include="Models\GalleryObject.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\NotificationCenter.cs" />
