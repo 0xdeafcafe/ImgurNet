@@ -37,7 +37,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestDeleteImage()
 		{
-			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
 			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
@@ -55,7 +55,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestUpdateImageDetails()
 		{
-			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
 			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
@@ -78,7 +78,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 		[TestMethod]
 		public async Task TestFavouriteImage()
 		{
-			var filePath = AppDomain.CurrentDomain.BaseDirectory + @"\Assets\upload-image-example.jpg";
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
 			var imageBinary = File.ReadAllBytes(filePath);
 
 			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
