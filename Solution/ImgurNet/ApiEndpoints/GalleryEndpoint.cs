@@ -14,9 +14,10 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region Endpoints
 
-		internal const string GalleryUrl =					"gallery/{0}/{1}/{2}/{3}?showViral={4}";
-		internal const string GallerySubRedditUrl =			"gallery/r/{0}/{1}/{2}/{3}";
 		internal const string GallerySubRedditImageUrl =	"gallery/r/{0}/{1}";
+		internal const string GallerySubRedditUrl =			"gallery/r/{0}/{1}/{2}/{3}";
+		internal const string GallerySearchUrl =			"gallery/search/{0}/{1}?q={2}";
+		internal const string GalleryUrl =					"gallery/{0}/{1}/{2}/{3}?showViral={4}";
 
 		#endregion
 
@@ -86,6 +87,26 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<GalleryImage>(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication);
+		}
+
+		/// <summary>
+		/// Search the gallery with a given query string
+		/// </summary>
+		/// <param name="searchQuery">A valid search query</param>
+		/// <param name="page">The current page</param>
+		/// <param name="sort">The sort method (can't be viral)</param>
+		public async Task<ImgurResponse<IGalleryObject[]>> SearchGalleryAsync(string searchQuery, int page = 0,
+			GallerySort sort = GallerySort.Time)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var endpoint = String.Format(GallerySearchUrl, sort.ToString().ToLowerInvariant(), page, searchQuery);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
+						customParser: ParseGalleryObjectArrayResponse);
 		}
 
 		#region Seralization Helpers
