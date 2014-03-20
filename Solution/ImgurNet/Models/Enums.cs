@@ -48,7 +48,8 @@
 	public enum GallerySort
 	{
 		Viral,
-		Time
+		Time,
+		Top
 	}
 
 	public enum GalleryWindow

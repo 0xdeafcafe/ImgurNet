@@ -15,6 +15,7 @@ namespace ImgurNet.ApiEndpoints
 		#region Endpoints
 
 		internal const string GalleryUrl =			"gallery/{0}/{1}/{2}/{3}?showViral={4}";
+		internal const string GallerySubRedditUrl = "gallery/r/{0}/{1}/{2}/{3}";
 
 		#endregion
 
@@ -44,7 +45,29 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
-						customParser: ParseGalleryObjectsArrayResponse);
+						customParser: ParseGalleryObjectArrayResponse);
+		}
+
+		/// <summary>
+		/// View gallery images for a sub-reddit
+		/// </summary>
+		/// <param name="subreddit">A valid sub-reddit name</param>
+		/// <param name="page">The current page</param>
+		/// <param name="sort">The sort method (can't be viral)</param>
+		/// <param name="window">Change the date range of the request if the section is "top"</param>
+		public async Task<ImgurResponse<IGalleryObject[]>> GetSubredditGalleryAsync(string subreddit, int page = 0,
+			GallerySort sort = GallerySort.Time, GalleryWindow window = GalleryWindow.Week)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var endpoint = String.Format(GallerySubRedditUrl, subreddit, sort.ToString().ToLowerInvariant(),
+				window.ToString().ToLowerInvariant(), page);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
+						customParser: ParseGalleryObjectArrayResponse);
 		}
 
 		#region Seralization Helpers
@@ -53,7 +76,7 @@ namespace ImgurNet.ApiEndpoints
 		/// Parses a list of Gallery Objects
 		/// </summary>
 		/// <param name="jsonObject">The <see cref="JObject"/> response from imgur</param>
-		public ImgurResponse<IGalleryObject[]> ParseGalleryObjectsArrayResponse(JObject jsonObject)
+		public ImgurResponse<IGalleryObject[]> ParseGalleryObjectArrayResponse(JObject jsonObject)
 		{
 			var imgurResponse = new ImgurResponse<IGalleryObject[]>
 			{
