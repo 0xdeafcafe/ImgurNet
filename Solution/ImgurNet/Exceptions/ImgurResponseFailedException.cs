@@ -10,6 +10,9 @@ namespace ImgurNet.Exceptions
 		public ImgurResponseFailedException(string message)
 			: base(message) { }
 
+		public ImgurResponseFailedException(string message, Exception innerException)
+			: base(message, innerException) { }
+
 		public ImgurResponseFailedException(ImgurResponse<Error> imgurResponse, string message)
 			: base(message)
 		{

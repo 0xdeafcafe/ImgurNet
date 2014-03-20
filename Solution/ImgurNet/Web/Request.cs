@@ -115,10 +115,8 @@ namespace ImgurNet.Web
 			authentication.RateLimit.UserReset = double.Parse(httpResponse.Headers.GetValue("X-RateLimit-UserReset") ?? "0").ToDateTime();
 
 			// Try parsing and validating the output
-#if DEBUG
 			try
 			{
-#endif
 				var stringResponse = await httpResponse.Content.ReadAsStringAsync();
 				if (stringResponse.StartsWith("<"))
 					throw new WebException("Imgur's servers are current'y overloaded. Please wait.");
@@ -131,10 +129,11 @@ namespace ImgurNet.Web
 
 				var errorImgurReponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
 				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);
-#if DEBUG
 			}
-			catch (JsonReaderException) { return null; }
-#endif
+			catch (JsonReaderException exception)
+			{
+				throw new ImgurResponseFailedException("The response from Imgur was malformed.", exception);
+			}
 		}
 
 		/// <summary>
