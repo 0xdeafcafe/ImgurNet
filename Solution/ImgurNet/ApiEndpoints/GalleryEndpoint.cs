@@ -14,8 +14,9 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region Endpoints
 
-		internal const string GalleryUrl =			"gallery/{0}/{1}/{2}/{3}?showViral={4}";
-		internal const string GallerySubRedditUrl = "gallery/r/{0}/{1}/{2}/{3}";
+		internal const string GalleryUrl =					"gallery/{0}/{1}/{2}/{3}?showViral={4}";
+		internal const string GallerySubRedditUrl =			"gallery/r/{0}/{1}/{2}/{3}";
+		internal const string GallerySubRedditImageUrl =	"gallery/r/{0}/{1}";
 
 		#endregion
 
@@ -68,6 +69,23 @@ namespace ImgurNet.ApiEndpoints
 				await
 					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
 						customParser: ParseGalleryObjectArrayResponse);
+		}
+
+		/// <summary>
+		/// View a single image in the subreddit
+		/// </summary>
+		/// <param name="subreddit">A valid sub-reddit name</param>
+		/// <param name="imageId">The ID for the image</param>
+		public async Task<ImgurResponse<GalleryImage>> GetSubredditGalleryImageAsync(string subreddit, string imageId)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var endpoint = String.Format(GallerySubRedditImageUrl, subreddit, imageId);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<GalleryImage>(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication);
 		}
 
 		#region Seralization Helpers
