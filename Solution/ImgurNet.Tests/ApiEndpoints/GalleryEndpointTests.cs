@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
 using ImgurNet.Tests.Helpers;
@@ -72,6 +73,27 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.IsNotNull(response.Data);
 			Assert.AreEqual(response.Success, true);
 			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+		}
+
+		[TestMethod]
+		public async Task TestGalleryImageSubmission()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var imageEndpoint = new ImageEndpoint(imgurClient);
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+
+			var filePath = VariousFunctions.GetTestsAssetDirectory() + @"\upload-image-example.jpg";
+			var imageBinary = File.ReadAllBytes(filePath);
+			var uploadedImage = await imageEndpoint.UploadImageFromBinaryAsync(imageBinary);
+
+			var response = await galleryEndpoint.SubmitImageToGalleryAsync(uploadedImage.Data.Id, "test submission - brace for downvotes");
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+
+			Assert.AreEqual(response.Data, true);
 		}
 	}
 }
