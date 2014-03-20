@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using ImgurNet.Authentication;
 using ImgurNet.Exceptions;
@@ -12,8 +12,6 @@ namespace ImgurNet.ApiEndpoints
 {
 	public class ImageEndpoint : BaseEndpoint
 	{
-		internal const int MaxUriLength = 32766;
-
 		#region EndPoints
 
 		internal const string UploadImageUrl =		"image";
@@ -108,34 +106,34 @@ namespace ImgurNet.ApiEndpoints
 
 		#region Upload Base64 Image
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="base64ImageData"></param>
+		/// <param name="albumId"></param>
+		/// <param name="name"></param>
+		/// <param name="title"></param>
+		/// <param name="description"></param>
+		/// <returns></returns>
 		public async Task<ImgurResponse<Image>> UploadImageFromBase64Async(string base64ImageData,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
-			if (ImgurClient.Authentication == null)
-				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
-
-			var sb = new StringBuilder();
-			for (var i = 0; i < base64ImageData.Length; i += MaxUriLength)
-				sb.Append(base64ImageData.Substring(i, Math.Min(MaxUriLength, base64ImageData.Length - i)));
-
-			var keyPairs = new List<KeyValuePair<string, string>>
-			{
-				new KeyValuePair<string, string>("image", base64ImageData),
-				new KeyValuePair<string, string>("type", "base64")
-			};
-			if (albumId != null) keyPairs.Add(new KeyValuePair<string, string>(albumId, albumId));
-			if (name != null) keyPairs.Add(new KeyValuePair<string, string>("name", name));
-			if (title != null) keyPairs.Add(new KeyValuePair<string, string>("title", title));
-			if (description != null) keyPairs.Add(new KeyValuePair<string, string>("description", description));
-			var multi = new FormUrlEncodedContent(keyPairs.ToArray());
-
-			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, ImgurClient.Authentication, content: multi);
+			return await UploadImageFromBinaryAsync(Convert.FromBase64String(base64ImageData), albumId, name, title, description);
 		}
 
 		#endregion
 
 		#region Upload Image From Url
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="url"></param>
+		/// <param name="albumId"></param>
+		/// <param name="name"></param>
+		/// <param name="title"></param>
+		/// <param name="description"></param>
+		/// <returns></returns>
 		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(string url,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
@@ -156,6 +154,15 @@ namespace ImgurNet.ApiEndpoints
 			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, ImgurClient.Authentication, content: multi);
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uri"></param>
+		/// <param name="albumId"></param>
+		/// <param name="name"></param>
+		/// <param name="title"></param>
+		/// <param name="description"></param>
+		/// <returns></returns>
 		public async Task<ImgurResponse<Image>> UploadImageFromUrlAsync(Uri uri,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
@@ -166,10 +173,29 @@ namespace ImgurNet.ApiEndpoints
 
 		#region Upload Image From Binary
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="imageBinary"></param>
+		/// <param name="albumId"></param>
+		/// <param name="name"></param>
+		/// <param name="title"></param>
+		/// <param name="description"></param>
+		/// <returns></returns>
 		public async Task<ImgurResponse<Image>> UploadImageFromBinaryAsync(byte[] imageBinary,
 			string albumId = null, string name = null, string title = null, string description = null)
 		{
-			return await UploadImageFromBase64Async(Convert.ToBase64String(imageBinary), albumId, name, title, description);
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var keyPairs = new Dictionary<string, string>();
+			if (albumId != null) keyPairs.Add(albumId, albumId);
+			if (name != null) keyPairs.Add("name", name);
+			if (title != null) keyPairs.Add("title", title);
+			if (description != null) keyPairs.Add("description", description);
+			var stream = new StreamContent(new MemoryStream(imageBinary));
+
+			return await Request.SubmitImgurRequestAsync<Image>(Request.HttpMethod.Post, UploadImageUrl, ImgurClient.Authentication, keyPairs, stream);
 		}
 
 		#endregion
