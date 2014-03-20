@@ -10,6 +10,7 @@ using ImgurNet.Exceptions;
 using ImgurNet.Extensions;
 using ImgurNet.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ImgurNet.Web
 {
@@ -19,7 +20,7 @@ namespace ImgurNet.Web
 		/// 
 		/// </summary>
 		internal static readonly string ImgurApiV3Base = "https://api.imgur.com/3/{0}";
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -29,11 +30,12 @@ namespace ImgurNet.Web
 		/// <param name="authentication"></param>
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
+		/// <param name="customParser"></param>
 		/// <returns></returns>
 		internal async static Task<ImgurResponse<T>> SubmitImgurRequestAsync<T>(HttpMethod httpMethod, string endpointUrl,
-			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
+			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null, Func<JObject, ImgurResponse<T>> customParser = null)
 		{
-			return await SubmitImgurRequestAsync<T>(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content);
+			return await SubmitImgurRequestAsync(httpMethod, new Uri(String.Format(ImgurApiV3Base, endpointUrl)), authentication, queryStrings, content, customParser);
 		}
 
 		/// <summary>
@@ -45,9 +47,10 @@ namespace ImgurNet.Web
 		/// <param name="authentication"></param>
 		/// <param name="queryStrings"></param>
 		/// <param name="content"></param>
+		/// <param name="customParser"></param>
 		/// <returns></returns>
 		private async static Task<ImgurResponse<T>> SubmitImgurRequestAsync<T>(HttpMethod httpMethod, Uri endpointUri,
-			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null)
+			IAuthentication authentication, Dictionary<string, string> queryStrings = null, HttpContent content = null, Func<JObject, ImgurResponse<T>> customParser = null)
 		{
 			// Set up Query Strings
 			if (queryStrings == null)
@@ -122,7 +125,9 @@ namespace ImgurNet.Web
 
 				var imgurResponse = JsonConvert.DeserializeObject<ImgurResponse<object>>(stringResponse);
 				if (imgurResponse.Success)
-					return JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
+					return customParser != null
+						? customParser(JObject.Parse(stringResponse))
+						: JsonConvert.DeserializeObject<ImgurResponse<T>>(stringResponse);
 
 				var errorImgurReponse = JsonConvert.DeserializeObject<ImgurResponse<Error>>(stringResponse);
 				throw new ImgurResponseFailedException(errorImgurReponse, errorImgurReponse.Data.ErrorDescription);
