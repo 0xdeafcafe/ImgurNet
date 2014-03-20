@@ -60,5 +60,18 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(response.Success, true);
 			Assert.AreEqual(response.Status, HttpStatusCode.OK);
 		}
+
+		[TestMethod]
+		public async Task TestGalleryRandom()
+		{
+			var imgurClient = AuthenticationHelpers.CreateClientAuthenticatedImgurClient();
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+			var response = await galleryEndpoint.GetRandomGalleryImagesAsync();
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+		}
 	}
 }

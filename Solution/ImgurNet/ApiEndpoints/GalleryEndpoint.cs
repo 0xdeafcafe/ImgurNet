@@ -15,6 +15,7 @@ namespace ImgurNet.ApiEndpoints
 		#region Endpoints
 
 		internal const string GallerySubRedditImageUrl =	"gallery/r/{0}/{1}";
+		internal const string GalleryRandomUrl =			"gallery/random/{0}";
 		internal const string GallerySubRedditUrl =			"gallery/r/{0}/{1}/{2}/{3}";
 		internal const string GallerySearchUrl =			"gallery/search/{0}/{1}?q={2}";
 		internal const string GalleryUrl =					"gallery/{0}/{1}/{2}/{3}?showViral={4}";
@@ -102,6 +103,23 @@ namespace ImgurNet.ApiEndpoints
 				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
 
 			var endpoint = String.Format(GallerySearchUrl, sort.ToString().ToLowerInvariant(), page, searchQuery);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
+						customParser: ParseGalleryObjectArrayResponse);
+		}
+
+		/// <summary>
+		/// Returns a random set of gallery images.
+		/// </summary>
+		/// <param name="page">A page of random gallery images, from 0-50. Pages are regenerated every hour.</param>
+		public async Task<ImgurResponse<IGalleryObject[]>> GetRandomGalleryImagesAsync(int page = 0)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			var endpoint = String.Format(GalleryRandomUrl, page);
 
 			return
 				await
