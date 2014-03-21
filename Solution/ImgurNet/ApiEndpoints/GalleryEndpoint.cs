@@ -139,6 +139,23 @@ namespace ImgurNet.ApiEndpoints
 						customParser: ParseGalleryObjectArrayResponse);
 		}
 		
+		/// <summary>
+		/// Remove an image from the gallery.
+		/// </summary>
+		/// <param name="galleryId">The Id of the item to remove from the gallery</param>
+		public async Task<ImgurResponse<Boolean>> RemoveItemFromGalleryAsync(string galleryId)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(GalleryRemovalUrl, galleryId), ImgurClient.Authentication);
+		}
+
 		#region Gallery Submission
 
 		/// <summary>
@@ -190,23 +207,6 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		#endregion
-
-		/// <summary>
-		/// Remove an image from the gallery.
-		/// </summary>
-		/// <param name="galleryId">The Id of the item to remove from the gallery</param>
-		public async Task<ImgurResponse<Boolean>> RemoveItemFromGalleryAsync(string galleryId)
-		{
-			if (ImgurClient.Authentication == null)
-				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
-
-			if (!(ImgurClient.Authentication is OAuth2Authentication))
-				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
-
-			return
-				await
-					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(GalleryRemovalUrl, galleryId), ImgurClient.Authentication);
-		}
 
 		#region Get Gallery Object
 
