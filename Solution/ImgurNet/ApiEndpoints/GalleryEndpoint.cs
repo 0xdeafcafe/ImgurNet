@@ -16,6 +16,7 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region Endpoints
 
+		internal const string GalleryRemovalUrl =			"gallery/{0}";
 		internal const string GallerySubRedditImageUrl =	"gallery/r/{0}/{1}";
 		internal const string GalleryRandomUrl =			"gallery/random/{0}";
 		internal const string GallerySubRedditUrl =			"gallery/r/{0}/{1}/{2}/{3}";
@@ -132,7 +133,7 @@ namespace ImgurNet.ApiEndpoints
 					Request.SubmitImgurRequestAsync(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication,
 						customParser: ParseGalleryObjectArrayResponse);
 		}
-
+		
 		#region Gallery Submission
 
 		/// <summary>
@@ -184,6 +185,23 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Remove an image from the gallery.
+		/// </summary>
+		/// <param name="galleryId">The Id of the item to remove from the gallery</param>
+		public async Task<ImgurResponse<Boolean>> RemoveItemFromGalleryAsync(string galleryId)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(GalleryRemovalUrl, galleryId), ImgurClient.Authentication);
+		}
 
 		#region Seralization Helpers
 

@@ -93,7 +93,24 @@ namespace ImgurNet.Tests.ApiEndpoints
 			Assert.AreEqual(response.Success, true);
 			Assert.AreEqual(response.Status, HttpStatusCode.OK);
 
+			// Assert the Data
 			Assert.AreEqual(response.Data, true);
+		}
+
+		[TestMethod]
+		public async Task TestGalleryRemoval()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+			var response = await galleryEndpoint.RemoveItemFromGalleryAsync("bbdicks");
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+
+			// Assert the Data
+			Assert.AreEqual(response.Data, false);
 		}
 	}
 }
