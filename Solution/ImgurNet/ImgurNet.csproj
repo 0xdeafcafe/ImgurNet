@@ -76,6 +76,7 @@
     <Compile Include="Models\NotificationMessage.cs" />
     <Compile Include="Models\NotifyPropertyChangedBase.cs" />
     <Compile Include="Models\OAuthTokens.cs" />
+    <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Request.cs" />
   </ItemGroup>
