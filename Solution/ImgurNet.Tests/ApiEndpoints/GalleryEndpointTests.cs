@@ -112,5 +112,31 @@ namespace ImgurNet.Tests.ApiEndpoints
 			// Assert the Data
 			Assert.AreEqual(response.Data, false);
 		}
+
+		[TestMethod]
+		public async Task TestGetGalleryImage()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+			var response = await galleryEndpoint.GetGalleryImageAsync("cHl4e4U");
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+		}
+
+		[TestMethod]
+		public async Task TestGetGalleryAlbum()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+			var response = await galleryEndpoint.GetGalleryAlbumAsync("1S2u5");
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+		}
 	}
 }

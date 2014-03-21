@@ -27,6 +27,11 @@ namespace ImgurNet.ApiEndpoints
 		internal const string SubmitGalleryImageUrl =		"gallery/image/{0}";
 		internal const string SubmitGalleryAlbumUrl =		"gallery/album/{0}";
 
+
+		internal const string GalleryReportUrl =			"gallery/{0}";
+		internal const string GalleryReportImageUrl =		"gallery/image/{0}";
+		internal const string GalleryReportAlbumUrl =		"gallery/album/{0}";
+
 		#endregion
 
 		public GalleryEndpoint(Imgur imgurClient)
@@ -202,6 +207,50 @@ namespace ImgurNet.ApiEndpoints
 				await
 					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, String.Format(GalleryRemovalUrl, galleryId), ImgurClient.Authentication);
 		}
+
+		#region Get Gallery Object
+
+		/// <summary>
+		/// Report an Album in the gallery
+		/// </summary>
+		/// <param name="albumId">The Id of the album to report</param>
+		public async Task<ImgurResponse<GalleryAlbum>> GetGalleryAlbumAsync(string albumId)
+		{
+			return await GetGalleryObjectAsync<GalleryAlbum>(albumId, true);
+		}
+
+		/// <summary>
+		/// Report an Image in the gallery
+		/// </summary>
+		/// <param name="imageId">The Id of the image to report</param>
+		public async Task<ImgurResponse<GalleryImage>> GetGalleryImageAsync(string imageId)
+		{
+			return await GetGalleryObjectAsync<GalleryImage>(imageId, false);
+		}
+		
+		/// <summary>
+		/// Report an Item in the gallery
+		/// </summary>
+		/// <typeparam name="T">The specified Gallery Object</typeparam>
+		/// <param name="ident">The Id of the item to report</param>
+		/// <param name="isAlbum">Flags declaring if the item is an album</param>
+		private async Task<ImgurResponse<T>> GetGalleryObjectAsync<T>(string ident, bool isAlbum)
+			where T : IGalleryObject
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var endpoint = String.Format(isAlbum ? GalleryReportAlbumUrl : GalleryReportImageUrl, ident);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<T>(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication);
+		}
+
+		#endregion
 
 		#region Seralization Helpers
 
