@@ -27,6 +27,9 @@ namespace ImgurNet.ApiEndpoints
 		internal const string SubmitGalleryImageUrl =		"gallery/image/{0}";
 		internal const string SubmitGalleryAlbumUrl =		"gallery/album/{0}";
 
+		internal const string GalleryDetailsUrl =			"gallery/{0}";
+		internal const string GalleryImageDetailsUrl =		"gallery/image/{0}";
+		internal const string GalleryAlbumDetailsUrl =		"gallery/album/{0}";
 
 		internal const string GalleryReportUrl =			"gallery/{0}";
 		internal const string GalleryReportImageUrl =		"gallery/image/{0}";
@@ -211,7 +214,7 @@ namespace ImgurNet.ApiEndpoints
 		#region Get Gallery Object
 
 		/// <summary>
-		/// Report an Album in the gallery
+		/// Get additional information about an album in the gallery.
 		/// </summary>
 		/// <param name="albumId">The Id of the album to report</param>
 		public async Task<ImgurResponse<GalleryAlbum>> GetGalleryAlbumAsync(string albumId)
@@ -220,7 +223,7 @@ namespace ImgurNet.ApiEndpoints
 		}
 
 		/// <summary>
-		/// Report an Image in the gallery
+		/// Get additional information about an image in the gallery.
 		/// </summary>
 		/// <param name="imageId">The Id of the image to report</param>
 		public async Task<ImgurResponse<GalleryImage>> GetGalleryImageAsync(string imageId)
@@ -229,10 +232,10 @@ namespace ImgurNet.ApiEndpoints
 		}
 		
 		/// <summary>
-		/// Report an Item in the gallery
+		/// Get additional information about an item in the gallery.
 		/// </summary>
 		/// <typeparam name="T">The specified Gallery Object</typeparam>
-		/// <param name="ident">The Id of the item to report</param>
+		/// <param name="ident">The Id of the item to get</param>
 		/// <param name="isAlbum">Flags declaring if the item is an album</param>
 		private async Task<ImgurResponse<T>> GetGalleryObjectAsync<T>(string ident, bool isAlbum)
 			where T : IGalleryObject
@@ -243,7 +246,7 @@ namespace ImgurNet.ApiEndpoints
 			if (!(ImgurClient.Authentication is OAuth2Authentication))
 				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
 
-			var endpoint = String.Format(isAlbum ? GalleryReportAlbumUrl : GalleryReportImageUrl, ident);
+			var endpoint = String.Format(isAlbum ? GalleryAlbumDetailsUrl : GalleryImageDetailsUrl, ident);
 
 			return
 				await
