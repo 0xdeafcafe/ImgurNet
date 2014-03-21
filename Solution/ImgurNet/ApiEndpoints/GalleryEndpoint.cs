@@ -39,6 +39,9 @@ namespace ImgurNet.ApiEndpoints
 		internal const string GalleryVotesImageUrl =		"gallery/image/{0}/votes";
 		internal const string GalleryVotesAlbumUrl =		"gallery/album/{0}/votes";
 
+		internal const string GalleryVoteUrl =				"gallery/{0}/vote/{1}";
+		internal const string GalleryVoteImageUrl =			"gallery/image/{0}/vote/{1}";
+		internal const string GalleryVoteAlbumUrl =			"gallery/album/{0}/vote/{1}";
 		#endregion
 
 		public GalleryEndpoint(Imgur imgurClient)
@@ -340,6 +343,51 @@ namespace ImgurNet.ApiEndpoints
 			return
 				await
 					Request.SubmitImgurRequestAsync<Vote>(Request.HttpMethod.Get, endpoint, ImgurClient.Authentication);
+		}
+
+		#endregion
+
+		#region Vote On Gallery Object
+
+		/// <summary>
+		/// Vote for an image. Send the same value again to undo a vote.
+		/// </summary>
+		/// <param name="albumId">The Id of the album to vote for</param>
+		/// <param name="vote">The vote to give</param>
+		public async Task<ImgurResponse<Boolean>> VoteOnGalleryAlbumAsync(string albumId, VoteDirection vote)
+		{
+			return await VoteOnGalleryObjectAsync(albumId, true, vote);
+		}
+
+		/// <summary>
+		/// Vote for an album. Send the same value again to undo a vote.
+		/// </summary>
+		/// <param name="imageId">The Id of the image to vote for</param>
+		/// <param name="vote">The vote to give</param>
+		public async Task<ImgurResponse<Boolean>> VoteOnGalleryImageAsync(string imageId, VoteDirection vote)
+		{
+			return await VoteOnGalleryObjectAsync(imageId, false, vote);
+		}
+
+		/// <summary>
+		/// Vote for an item. Send the same value again to undo a vote.
+		/// </summary>
+		/// <param name="ident">The Id of the item to vote for</param>
+		/// <param name="isAlbum">Flags declaring if the item is an album</param>
+		/// <param name="vote">The vote to give</param>
+		private async Task<ImgurResponse<Boolean>> VoteOnGalleryObjectAsync(string ident, bool isAlbum, VoteDirection vote)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var endpoint = String.Format(isAlbum ? GalleryVoteAlbumUrl : GalleryVoteImageUrl, ident, vote.ToString().ToLowerInvariant());
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Post, endpoint, ImgurClient.Authentication);
 		}
 
 		#endregion

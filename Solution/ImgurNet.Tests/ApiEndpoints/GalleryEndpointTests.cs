@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using ImgurNet.ApiEndpoints;
+using ImgurNet.Models;
 using ImgurNet.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -158,6 +159,19 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var galleryEndpoint = new GalleryEndpoint(imgurClient);
 			var response = await galleryEndpoint.GetGalleryImageVotesAsync("1Rj4ABb");
+
+			// Assert the Reponse
+			Assert.IsNotNull(response.Data);
+			Assert.AreEqual(response.Success, true);
+			Assert.AreEqual(response.Status, HttpStatusCode.OK);
+		}
+
+		[TestMethod]
+		public async Task TestVoteOnGalleryImage()
+		{
+			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
+			var galleryEndpoint = new GalleryEndpoint(imgurClient);
+			var response = await galleryEndpoint.VoteOnGalleryImageAsync("1Rj4ABb", VoteDirection.Up);
 
 			// Assert the Reponse
 			Assert.IsNotNull(response.Data);
