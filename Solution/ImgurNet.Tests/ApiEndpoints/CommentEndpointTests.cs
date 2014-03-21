@@ -77,7 +77,7 @@ namespace ImgurNet.Tests.ApiEndpoints
 			var imgurClient = await AuthenticationHelpers.CreateOAuth2AuthenticatedImgurClient();
 			var commentEndpoint = new CommentEndpoint(imgurClient);
 			var comment = await commentEndpoint.GetCommentAsync(193421419);
-			var votedComment = await commentEndpoint.VoteCommentAsync(comment.Data.Id, Vote.Up);
+			var votedComment = await commentEndpoint.VoteCommentAsync(comment.Data.Id, VoteDirection.Up);
 
 			// Assert the Reponse
 			Assert.IsNotNull(votedComment.Data);

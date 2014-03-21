@@ -32,7 +32,7 @@
 		Vertical
 	}
 
-	public enum Vote
+	public enum VoteDirection
 	{
 		Up,
 		Down
