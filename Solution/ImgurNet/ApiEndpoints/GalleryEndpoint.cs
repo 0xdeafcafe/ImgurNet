@@ -255,6 +255,48 @@ namespace ImgurNet.ApiEndpoints
 
 		#endregion
 
+		#region Report Gallery Object
+
+		/// <summary>
+		/// Report an Album in the gallery
+		/// </summary>
+		/// <param name="albumId">The Id of the album to report</param>
+		public async Task<ImgurResponse<Boolean>> ReportGalleryAlbumAsync(string albumId)
+		{
+			return await ReportGalleryObjectAsync(albumId, true);
+		}
+
+		/// <summary>
+		/// Report an Image in the gallery
+		/// </summary>
+		/// <param name="imageId">The Id of the image to report</param>
+		public async Task<ImgurResponse<Boolean>> ReportGalleryImageAsync(string imageId)
+		{
+			return await ReportGalleryObjectAsync(imageId, false);
+		}
+
+		/// <summary>
+		/// Report an Item in the gallery
+		/// </summary>
+		/// <typeparam name="T">The specified Gallery Object</typeparam>
+		/// <param name="ident">The Id of the item to report</param>
+		/// <param name="isAlbum">Flags declaring if the item is an album</param>
+		private async Task<ImgurResponse<Boolean>> ReportGalleryObjectAsync(string ident, bool isAlbum)
+		{
+			if (ImgurClient.Authentication == null)
+				throw new InvalidAuthenticationException("Authentication can not be null. Set it in the main Imgur class.");
+
+			if (!(ImgurClient.Authentication is OAuth2Authentication))
+				throw new InvalidAuthenticationException("You need to use OAuth2Authentication to call this Endpoint.");
+
+			var endpoint = String.Format(isAlbum ? GalleryReportAlbumUrl : GalleryReportImageUrl, ident);
+
+			return
+				await
+					Request.SubmitImgurRequestAsync<Boolean>(Request.HttpMethod.Delete, endpoint, ImgurClient.Authentication);
+		}
+
+		#endregion
 		#region Seralization Helpers
 
 		/// <summary>
