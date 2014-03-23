@@ -8,9 +8,9 @@ namespace ImgurNet.Helpers
 	internal static class AsyncHelper
 	{
 		/// <summary>
-		/// Execute's an async Task<T> method which has a void return value synchronously
+		/// Execute's an async Task method which has a void return value synchronously
 		/// </summary>
-		/// <param name="task">Task<T> method to execute</param>
+		/// <param name="task">Task method to execute</param>
 		internal static void RunSync(Func<Task> task)
 		{
 			var oldContext = SynchronizationContext.Current;
