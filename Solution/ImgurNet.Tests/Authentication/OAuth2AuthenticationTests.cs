@@ -18,6 +18,7 @@ namespace ImgurNet.Tests.Authentication
 			// Create a new OAuth2 Authentication
 			var oAuth2Authentication = new OAuth2Authentication(settings.ClientId, settings.ClientSecret, false);
 			var authorizationUrl = oAuth2Authentication.CreateAuthorizationUrl(OAuth2Type.Pin, "dicks");
+			Assert.AreNotEqual("", authorizationUrl);
 			var pin = "1234";
 			try
 			{

@@ -13,10 +13,10 @@ namespace ImgurNet.ApiEndpoints
 	{
 		#region Endpoints
 
-		internal const string ConversationsUrl =		"conversations";
+		internal const string ConversationsUrl =			"conversations";
 		internal const string ConversationUrl =			"conversations/{0}";
 		internal const string ConversationReportUrl =	"conversations/report/{0}";
-		internal const string ConversationBlockUrl =	"conversations/block/{0}";
+		internal const string ConversationBlockUrl =		"conversations/block/{0}";
 
 		#endregion
 

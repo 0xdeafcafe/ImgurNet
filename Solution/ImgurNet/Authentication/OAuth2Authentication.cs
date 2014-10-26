@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ImgurNet.Exceptions;
 using ImgurNet.Extensions;
-using ImgurNet.Helpers;
 using ImgurNet.Models;
 using ImgurNet.Web;
 
@@ -56,7 +54,7 @@ namespace ImgurNet.Authentication
 
 		/// <summary>
 		/// When the <see cref="AccessToken"/> will expire, and you have to generate a new one with the refresh token
-		/// </summary>
+		/// </summary
 		public DateTime ExpiresAt { get; private set; }
 
 		/// <summary>
@@ -79,7 +77,7 @@ namespace ImgurNet.Authentication
 		/// </summary>
 		/// <param name="clientId">The ClientId of your imgur client. Create one here (https://api.imgur.com/oauth2/addclient).</param>
 		/// <param name="clientSecret">The ClientSecret of your imgur client. Create one here (https://api.imgur.com/oauth2/addclient).</param>
-		/// <param name="checkRateLimit">Check, and load into the model, the current ratelimit status of your client.</param>
+		/// <param name="checkRateLimit">Check, and populate the current ratelimit status of your client.</param>
 		public OAuth2Authentication(string clientId, string clientSecret, bool checkRateLimit)
 		{
 			ClientId = clientId;
@@ -88,7 +86,7 @@ namespace ImgurNet.Authentication
 
 			RateLimit = new Credits();
 			if (!checkRateLimit) return;
-			AsyncHelper.RunSync(() => Request.SubmitImgurRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this));
+			RateLimit = Request.SubmitImgurRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this).Result.Data;
 		}
 
 		#region Authorizing

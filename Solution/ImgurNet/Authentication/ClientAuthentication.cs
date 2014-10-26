@@ -1,5 +1,4 @@
-﻿using ImgurNet.Helpers;
-using ImgurNet.Models;
+﻿using ImgurNet.Models;
 using ImgurNet.Web;
 
 namespace ImgurNet.Authentication
@@ -28,7 +27,7 @@ namespace ImgurNet.Authentication
 
 			RateLimit = new Credits();
 			if (!checkRateLimit) return;
-			AsyncHelper.RunSync(() => Request.SubmitImgurRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this));
+			RateLimit = Request.SubmitImgurRequestAsync<Credits>(Request.HttpMethod.Get, Credits.CreditsUrl, this).Result.Data;
 		}
 		
 		/// <summary>
